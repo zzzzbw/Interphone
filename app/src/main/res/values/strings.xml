@@ -1,0 +1,19 @@
+<resources>
+    <string name="global_ok">确定</string>
+
+
+    <string name="app_name">Interphone</string>
+    <string name="main_list_info">对讲机信息</string>
+    <string name="main_list_setting">整机设置</string>
+    <string name="main_list_channel">信道</string>
+    <string name="main_list_DTMF">DTMF信令</string>
+    <string name="main_list_scan">扫描</string>
+    <string name="JZ_level">静噪等级</string>
+    <string name="timer">发射限时定时器</string>
+    <string name="SKZY_level">声控增益级别</string>
+    <string name="key_A">A键功能</string>
+    <string name="key_B">B键功能</string>
+    <string name="key_C">C键功能</string>
+    <string name="key_D">D键功能</string>
+
+</resources>

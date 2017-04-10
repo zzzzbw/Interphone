@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="JZlevel_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+
+    <string-array name="timer_values">
+        <item>0秒</item>
+        <item>30秒</item>
+        <item>60秒</item>
+        <item>90秒</item>
+        <item>120秒</item>
+        <item>150秒</item>
+        <item>180秒</item>
+        <item>210秒</item>
+        <item>240秒</item>
+        <item>270秒</item>
+        <item>300秒</item>
+    </string-array>
+
+    <string-array name="SKZYLevel_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+
+    <string-array name="key_use_values">
+        <item>无</item>
+        <item>信道别名</item>
+        <item>背光灯</item>
+        <item>键盘锁</item>
+        <item>高低功率转换</item>
+        <item>PTT ID</item>
+        <item>扫描</item>
+        <item>VFO</item>
+        <item>VOX</item>
+        <item>呼叫</item>
+        <item>摇闭</item>
+        <item>摇晕</item>
+        <item>复活</item>
+        <item>扰频</item>
+    </string-array>
+</resources>
