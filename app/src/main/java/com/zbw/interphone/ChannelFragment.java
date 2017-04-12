@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.zbw.interphone.model.ChannelList;
@@ -60,6 +61,17 @@ public class ChannelFragment extends Fragment {
     @BindView(R.id.channel_launch_CTCSSCodeButton)
     public Button launchCTCSSCodeButton;
 
+    @BindView(R.id.channel_validCheckBox)
+    public CheckBox validCheckBox;
+    @BindView(R.id.channel_PTTIDCheckBox)
+    public CheckBox PTTIDCheckBox;
+    @BindView(R.id.channel_choiceCallCheckBox)
+    public CheckBox choiceCallCheckBox;
+    @BindView(R.id.channel_busyDenyCheckBox)
+    public CheckBox busyDenyCheckBox;
+    @BindView(R.id.channel_interfereCheckBox)
+    public CheckBox interfereCheckBox;
+
     public static ChannelFragment newInstance(UUID channelId) {
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_CHANNEL_ID, channelId);
@@ -90,6 +102,19 @@ public class ChannelFragment extends Fragment {
 
         receiveRateEditText.setText(channel.getReceiveRate() + "");
         receiveCTCSSTypeButton.setText(RUtil.getShowResource(R.array.CTCSSType_values, channel.getReceiveCTCSSType()));
+        receiveCTCSSRateButton.setText(channel.getReceiveCTCSSRate() + "");
+        receiveCTCSSCodeButton.setText(channel.getReceiveCTCSSCode() + "");
+
+        launchRateEditText.setText(channel.getLaunchRate() + "");
+        launchCTCSSTypeButton.setText(RUtil.getShowResource(R.array.CTCSSType_values, channel.getLaunchCTCSSType()));
+        launchCTCSSRateButton.setText(channel.getLaunchCTCSSRate() + "");
+        launchCTCSSCodeButton.setText(channel.getLaunchCTCSSCode() + "");
+
+        validCheckBox.setChecked(channel.isValid());
+        PTTIDCheckBox.setChecked(channel.isPTTID());
+        choiceCallCheckBox.setChecked(channel.isChoiceCall());
+        busyDenyCheckBox.setChecked(channel.isBusyDeny());
+        interfereCheckBox.setChecked(channel.isInterfere());
         return view;
     }
 }
