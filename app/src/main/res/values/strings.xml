@@ -16,4 +16,21 @@
     <string name="key_C">C键功能</string>
     <string name="key_D">D键功能</string>
 
+    <!--信道列表-->
+    <string name="channel_spacing">信道间隔</string>
+    <string name="power_level">发射功率级别</string>
+    <string name="first_scan">优先扫描</string>
+    <string name="scan_list">扫描列表</string>
+    <string name="rate">频率[兆赫兹]</string>
+    <string name="CTCSS_type">亚音类型</string>
+    <string name="CTCSS_rate">亚音频</string>
+    <string name="CTCSS_code">亚音数码</string>
+
+    <string name="valid">有效</string>
+    <string name="PTT_id">PTT ID</string>
+    <string name="busy_deny">遇忙禁发</string>
+    <string name="choice_call">选呼</string>
+    <string name="interfere">扰频</string>
+
+
 </resources>

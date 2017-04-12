@@ -17,8 +17,8 @@ public class InterphoneChannel {
 
     private float receiveRate;
     private int receiveCTCSSType;
-    private float receviceCTCSSRate;
-    private float receviceCTCSSCode;
+    private float receiveCTCSSRate;
+    private float receiveCTCSSCode;
 
     private float launchRate;
     private int launchCTCSSType;
@@ -30,6 +30,10 @@ public class InterphoneChannel {
     private boolean busyDeny;
     private boolean choiceCall;
     private boolean interfere;
+
+    public InterphoneChannel() {
+        id = UUID.randomUUID();
+    }
 
     public UUID getId() {
         return id;
@@ -95,20 +99,20 @@ public class InterphoneChannel {
         this.receiveCTCSSType = receiveCTCSSType;
     }
 
-    public float getReceviceCTCSSRate() {
-        return receviceCTCSSRate;
+    public float getReceiveCTCSSRate() {
+        return receiveCTCSSRate;
     }
 
-    public void setReceviceCTCSSRate(float receviceCTCSSRate) {
-        this.receviceCTCSSRate = receviceCTCSSRate;
+    public void setReceiveCTCSSRate(float receiveCTCSSRate) {
+        this.receiveCTCSSRate = receiveCTCSSRate;
     }
 
-    public float getReceviceCTCSSCode() {
-        return receviceCTCSSCode;
+    public float getReceiveCTCSSCode() {
+        return receiveCTCSSCode;
     }
 
-    public void setReceviceCTCSSCode(float receviceCTCSSCode) {
-        this.receviceCTCSSCode = receviceCTCSSCode;
+    public void setReceiveCTCSSCode(float receiveCTCSSCode) {
+        this.receiveCTCSSCode = receiveCTCSSCode;
     }
 
     public float getLaunchRate() {

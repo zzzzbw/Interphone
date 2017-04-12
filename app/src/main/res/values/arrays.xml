@@ -56,4 +56,26 @@
         <item>复活</item>
         <item>扰频</item>
     </string-array>
+    
+    <string-array name="channelSpacing_values">
+        <item>宽带</item>
+        <item>窄带</item>
+    </string-array>
+
+    <string-array name="powerLevel_values">
+        <item>高</item>
+        <item>低</item>
+    </string-array>
+
+    <string-array name="firstScan_values">
+        <item>普通扫描信道</item>
+        <item>优先扫描信道</item>
+    </string-array>
+    
+    <string-array name="CTCSSType_values">
+        <item>无</item>
+        <item>亚音频</item>
+        <item>正向亚音频</item>
+        <item>反向亚音频</item>
+    </string-array>
 </resources>
