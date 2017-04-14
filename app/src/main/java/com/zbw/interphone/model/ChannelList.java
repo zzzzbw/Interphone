@@ -38,13 +38,25 @@ public class ChannelList {
         return channels;
     }
 
-    public InterphoneChannel getChannel(UUID id){
-        for(InterphoneChannel channel:channels){
-            if(channel.getId().equals(id)){
+    public InterphoneChannel getChannel(UUID id) {
+        for (InterphoneChannel channel : channels) {
+            if (channel.getId().equals(id)) {
                 return channel;
             }
         }
         return null;
+    }
+
+    public boolean updateChannel(InterphoneChannel channel) {
+        if (channel != null) {
+            for (int i = 0; i < channels.size(); i++) {
+                if (channels.get(i).getId().equals(channel.getId())) {
+                    channels.set(i, channel);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
