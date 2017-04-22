@@ -86,8 +86,8 @@ public class MainListFragment extends ListFragment {
         startActivity(intent);
     }
 
-    private void goChannelListActivity(){
-        Intent intent=new Intent(mAppActivity,ChannelListActivity.class);
+    private void goChannelListActivity() {
+        Intent intent = new Intent(mAppActivity, ChannelListActivity.class);
         startActivity(intent);
     }
 

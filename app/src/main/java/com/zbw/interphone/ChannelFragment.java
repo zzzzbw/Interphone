@@ -240,11 +240,33 @@ public class ChannelFragment extends Fragment {
         ChannelList.get(mAppActivity).updateChannel(channel);
     }
 
-    @OnTextChanged(value = {R.id.channel_nicknameEditText,
-            R.id.channel_receive_rateEditText,
-            R.id.channel_launch_rateEditText}, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void changeEditText(CharSequence s, int start, int before, int count) {
+    @OnTextChanged(value = R.id.channel_nicknameEditText, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void nicknameChange(CharSequence s, int start, int before, int count) {
+        channel.setNickname(s.toString());
+        ChannelList.get(mAppActivity).updateChannel(channel);
+    }
 
-        Toast.makeText(mAppActivity, "editchange:" + s, Toast.LENGTH_SHORT).show();
+    @OnTextChanged(value = R.id.channel_receive_rateEditText, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void receiveRateChange(CharSequence s, int start, int before, int count) {
+        float value = 0;
+        try {
+            value = Float.parseFloat(s.toString());
+        } catch (Exception e) {
+        }
+        channel.setReceiveRate(value);
+        ChannelList.get(mAppActivity).updateChannel(channel);
+
+    }
+
+    @OnTextChanged(value = R.id.channel_launch_rateEditText, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    public void launchRateChange(CharSequence s, int start, int before, int count) {
+        float value = 0;
+        try {
+            value = Float.parseFloat(s.toString());
+            channel.setLaunchRate(value);
+        } catch (Exception e) {
+        }
+        channel.setLaunchRate(Float.parseFloat(s.toString()));
+        ChannelList.get(mAppActivity).updateChannel(channel);
     }
 }
