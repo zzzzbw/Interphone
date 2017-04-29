@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewCodingSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/coding_setting" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewDecodingSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/decoding_setting" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -79,12 +79,91 @@
         <item>反向亚音频</item>
     </string-array>
 
-    <string-array name="device_values">
-        <item>COM0</item>
-        <item>COM1</item>
-        <item>COM2</item>
-        <item>COM3</item>
-        <item>COM4</item>
+    <string-array name="launchSpeed_values">
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+
+    <string-array name="firstLaunchDelay_values">
+        <item>100毫秒</item>
+        <item>200毫秒</item>
+        <item>300毫秒</item>
+        <item>400毫秒</item>
+        <item>500毫秒</item>
+        <item>600毫秒</item>
+        <item>700毫秒</item>
+        <item>800毫秒</item>
+        <item>900毫秒</item>
+        <item>1000毫秒</item>
+    </string-array>
+
+    <string-array name="firstLaunchTime_values">
+        <item>0</item>
+        <item>100毫秒</item>
+        <item>200毫秒</item>
+        <item>300毫秒</item>
+        <item>400毫秒</item>
+        <item>500毫秒</item>
+        <item>600毫秒</item>
+        <item>700毫秒</item>
+        <item>800毫秒</item>
+        <item>900毫秒</item>
+        <item>1000毫秒</item>
+    </string-array>
+
+    <string-array name="scanSpaceTime_values">
+        <item>250毫秒</item>
+        <item>500毫秒</item>
+        <item>750毫秒</item>
+        <item>1000毫秒</item>
+        <item>1250毫秒</item>
+        <item>1500毫秒</item>
+        <item>1750毫秒</item>
+        <item>2000毫秒</item>
+        <item>2250毫秒</item>
+        <item>2500毫秒</item>
+        <item>2750毫秒</item>
+        <item>3000毫秒</item>
+        <item>3250毫秒</item>
+        <item>3500毫秒</item>
+        <item>3750毫秒</item>
+        <item>4000毫秒</item>
+        <item>4250毫秒</item>
+        <item>4500毫秒</item>
+        <item>4750毫秒</item>
+        <item>5000毫秒</item>
+    </string-array>
+
+    <string-array name="scanShelveTime_values">
+        <item>0.5秒</item>
+        <item>1.0秒</item>
+        <item>1.5秒</item>
+        <item>2.0秒</item>
+        <item>2.5秒</item>
+        <item>3.0秒</item>
+        <item>3.5秒</item>
+        <item>4.0秒</item>
+        <item>4.5秒</item>
+        <item>5.0秒</item>
+        <item>5.5秒</item>
+        <item>6.0秒</item>
+        <item>6.5秒</item>
+        <item>7.0秒</item>
+        <item>7.5秒</item>
+        <item>8.0秒</item>
+        <item>8.5秒</item>
+        <item>9.0秒</item>
+        <item>9.5秒</item>
+        <item>10.0秒</item>
     </string-array>
 
     <string-array name="listen_time_values">
@@ -93,4 +172,6 @@
         <item>中时</item>
         <item>长时</item>
     </string-array>
+
+
 </resources>

@@ -59,7 +59,6 @@ public class ChannelListFragment extends ListFragment {
         @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             if (convertView == null) {
                 convertView = mAppActivity.getLayoutInflater().inflate(R.layout.list_item_channel, null);
             }

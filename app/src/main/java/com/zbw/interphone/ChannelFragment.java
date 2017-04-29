@@ -31,7 +31,7 @@ import butterknife.OnClick;
  */
 
 public class ChannelFragment extends Fragment {
-    public static final String EXTRA_CHANNEL_ID = "com.zbw.interphont.channel_id";
+    public static final String EXTRA_CHANNEL_ID = "com.zbw.interphone.channel_id";
 
     private InterphoneChannel mChannel;
     private Activity mAppActivity;

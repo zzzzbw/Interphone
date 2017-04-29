@@ -73,11 +73,11 @@ public class MainFragment extends Fragment {
     private String[] lvs;
     private ArrayAdapter arrayAdapter;
 
-    private final static int MAIN_INFO=R.string.main_list_info;
-    private final static int MAIN_SETTINGS=R.string.main_list_settings;
-    private final static int MAIN_CHANNEL=R.string.main_list_channel;
-    private final static int MAIN_DTMF=R.string.main_list_DTMF;
-    private final static int MAIN_SCAN=R.string.main_list_scan;
+    private final static int MAIN_INFO = R.string.main_list_info;
+    private final static int MAIN_SETTINGS = R.string.main_list_settings;
+    private final static int MAIN_CHANNEL = R.string.main_list_channel;
+    private final static int MAIN_DTMF = R.string.main_list_DTMF;
+    private final static int MAIN_SCAN = R.string.main_list_scan;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,8 +86,8 @@ public class MainFragment extends Fragment {
         mDeviceSetting = DeviceSetting.get(mAppActivity);
         mPortHelper = new SerialPortHelper(mAppActivity);
         RUtil = new ResourceUtil(mAppActivity);
-        int[] resId={MAIN_INFO,MAIN_SETTINGS,MAIN_CHANNEL,MAIN_DTMF,MAIN_SCAN};
-        lvs=RUtil.getStringRescourceList(resId);
+        int[] resId = {MAIN_INFO, MAIN_SETTINGS, MAIN_CHANNEL, MAIN_DTMF, MAIN_SCAN};
+        lvs = RUtil.getStringRescourceList(resId);
 
     }
 
@@ -116,13 +116,21 @@ public class MainFragment extends Fragment {
         lvLeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
-                    case 0:createInfoDialog();break;
-                    case 1:goSettingsActivity();break;
-                    case 2:goChannelListActivity();break;
-                    case 3://Todo DTMF信令
+                switch (position) {
+                    case 0:
+                        createInfoDialog();
                         break;
-                    case 4://Todo 扫描
+                    case 1:
+                        goSettingsActivity();
+                        break;
+                    case 2:
+                        goChannelListActivity();
+                        break;
+                    case 3:
+                        goDTMFSettingActivity();
+                        break;
+                    case 4:
+                        goScanActivity();
                         break;
                     default:
                         Toast.makeText(mAppActivity, "没有此选项", Toast.LENGTH_SHORT).show();
@@ -136,8 +144,9 @@ public class MainFragment extends Fragment {
 
     @OnClick(R.id.buttonSelectDevice)
     public void onClickButtonSelectDevice() {
-        int index = RUtil.getIndex(R.array.device_values, mDeviceSetting.getDevice());
-        ArrayList<String> deviceList= FileUtil.getFiles("/dev","tty");
+        //int index = RUtil.getIndex(R.array.device_values, mDeviceSetting.getDevice());
+        int index = -1;
+        ArrayList<String> deviceList = FileUtil.getFiles("/dev", "tty");
         new MaterialDialog.Builder(mAppActivity)
                 .title(R.string.device)
                 .items(deviceList)
@@ -160,7 +169,7 @@ public class MainFragment extends Fragment {
 
     @OnClick(R.id.buttonConnectDevice)
     public void onClickButtonConnectDevice() {
-        if(mDeviceSetting.getDevice().equals("")){
+        if (mDeviceSetting.getDevice().equals("")) {
             Toast.makeText(mAppActivity, "请先选择串口", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -194,7 +203,6 @@ public class MainFragment extends Fragment {
     }
 
 
-
     private void createInfoDialog() {
         /*
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
@@ -217,6 +225,16 @@ public class MainFragment extends Fragment {
 
     private void goChannelListActivity() {
         Intent intent = new Intent(mAppActivity, ChannelListActivity.class);
+        startActivity(intent);
+    }
+
+    private void goDTMFSettingActivity() {
+        Intent intent = new Intent(mAppActivity, DTMFSettingActivity.class);
+        startActivity(intent);
+    }
+
+    private void goScanActivity() {
+        Intent intent = new Intent(mAppActivity, ScanActivity.class);
         startActivity(intent);
     }
 

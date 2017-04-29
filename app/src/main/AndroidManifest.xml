@@ -33,6 +33,46 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ChannelListActivity" />
         </activity>
+        <activity
+            android:name=".DTMFSettingActivity"
+            android:label="@string/dtmf_setting">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".CodingSettingActivity"
+            android:label="@string/coding_setting">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DTMFSettingActivity" />
+        </activity>
+        <activity
+            android:name=".DecodingSettingActivity"
+            android:label="@string/decoding_setting">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DTMFSettingActivity" />
+        </activity>
+        <activity
+            android:name=".ScanActivity"
+            android:label="@string/scan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".ScanSettingActivity"
+            android:label="@string/scan_setting">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ScanActivity" />
+        </activity>
+        <activity android:name=".ScanListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ScanActivity" />
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

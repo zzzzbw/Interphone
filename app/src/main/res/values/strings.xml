@@ -34,7 +34,36 @@
     <string name="busy_deny">遇忙禁发</string>
     <string name="choice_call">选呼</string>
     <string name="interfere">扰频</string>
-    
+
+    <!--DTMF信令-->
+    <string name="dtmf_setting">DTMF信令</string>
+    <string name="coding_setting">编码设置</string>
+    <string name="decoding_setting">解码设置</string>
+    <string name="launch_speed">发码速率</string>
+    <string name="first_launch_delay">首位发射延时时间</string>
+    <string name="first_launch_time">首位发射持续时间</string>
+    <string name="call_code_1">呼叫码1</string>
+    <string name="call_code_2">呼叫码2</string>
+    <string name="call_code_3">呼叫码3</string>
+    <string name="PTT_id_code">PTT ID码</string>
+    <string name="person_id">个人ID</string>
+    <string name="team_id">组呼ID</string>
+    <string name="group_id">群呼ID</string>
+    <string name="YB_code">遥闭识别码</string>
+    <string name="YY_code">遥晕识别码</string>
+    <string name="revive_code">复活识别码</string>
+
+    <!--扫描-->
+    <string name="scan">扫描</string>
+    <string name="scan_setting">扫描设置</string>
+    <string name="scan_list_1">扫描列表1</string>
+    <string name="scan_list_2">扫描列表2</string>
+    <string name="scan_list_3">扫描列表3</string>
+    <string name="scan_space_time">扫描间隔时间</string>
+    <string name="scan_shelve_time">扫描搁置时间</string>
+    <string name="scan_list_code">扫描信道编号</string>
+
+
     <!--软件设置-->
     <string name="device">串口</string>
     <string name="listen_time">监听时长</string>

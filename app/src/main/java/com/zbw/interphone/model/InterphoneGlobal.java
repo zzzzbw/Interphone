@@ -10,6 +10,8 @@ public class InterphoneGlobal {
 
     private InterphoneInfo mInfo;
     private InterphoneSetting mSetting;
+    private DTMFSetting mDTMFSetting;
+    private InterphoneScan mScan;
 
     private static InterphoneGlobal sGloabl;
     private Context mAppContext;
@@ -18,23 +20,30 @@ public class InterphoneGlobal {
         mAppContext = context;
         //先写死初始数据
 
-        InterphoneInfo interphoneInfo = new InterphoneInfo();
-        interphoneInfo.setType("H328");
-        interphoneInfo.setChannel("150-174MHz");
-        interphoneInfo.setVersion("1.0");
-        mInfo = interphoneInfo;
-        InterphoneSetting interphoneSetting = new InterphoneSetting();
-        interphoneSetting.setJZLevel(4);
-        interphoneSetting.setTimer(5);
-        interphoneSetting.setSKZYLevel(3);
-        interphoneSetting.setKeyA(5);
-        interphoneSetting.setKeyB(0);
-        interphoneSetting.setKeyC(0);
-        interphoneSetting.setKeyD(0);
-        interphoneSetting.setPowerSaving(false);
-        interphoneSetting.setIdRecognition(false);
-        mSetting = interphoneSetting;
+        mInfo = new InterphoneInfo();
+        mInfo.setType("H328");
+        mInfo.setChannel("150-174MHz");
+        mInfo.setVersion("1.0");
 
+        mSetting = new InterphoneSetting();
+        mSetting.setJZLevel(4);
+        mSetting.setTimer(5);
+        mSetting.setSKZYLevel(3);
+        mSetting.setKeyA(5);
+        mSetting.setKeyB(0);
+        mSetting.setKeyC(0);
+        mSetting.setKeyD(0);
+        mSetting.setPowerSaving(false);
+        mSetting.setIdRecognition(false);
+
+        mDTMFSetting = new DTMFSetting();
+        mDTMFSetting.setLaunchSpeed(3);
+        mDTMFSetting.setFirstLaunchDelay(4);
+        mDTMFSetting.setFirstLaunchTime(1);
+
+        mScan = new InterphoneScan();
+        mScan.setScanSpaceTime(0);
+        mScan.setScanShelveTime(9);
     }
 
     public static InterphoneGlobal get(Context context) {
@@ -58,5 +67,21 @@ public class InterphoneGlobal {
 
     public void setSetting(InterphoneSetting mSetting) {
         this.mSetting = mSetting;
+    }
+
+    public DTMFSetting getDTMFSetting() {
+        return mDTMFSetting;
+    }
+
+    public void setDTMFSetting(DTMFSetting mDTMFSetting) {
+        this.mDTMFSetting = mDTMFSetting;
+    }
+
+    public InterphoneScan getScan() {
+        return mScan;
+    }
+
+    public void setScan(InterphoneScan mScan) {
+        this.mScan = mScan;
     }
 }
