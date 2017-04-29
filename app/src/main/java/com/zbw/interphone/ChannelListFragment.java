@@ -1,12 +1,11 @@
 package com.zbw.interphone;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,16 +63,13 @@ public class ChannelListFragment extends ListFragment {
             if (convertView == null) {
                 convertView = mAppActivity.getLayoutInflater().inflate(R.layout.list_item_channel, null);
             }
-
             InterphoneChannel channel = getItem(position);
-
             TextView titleTextView = (TextView) convertView.findViewById(R.id.channel_list_item_titleTextView);
             titleTextView.setText("信道列表" + position);
             TextView nicknameTextView = (TextView) convertView.findViewById(R.id.channel_list_item_nicknameTextView);
             nicknameTextView.setText(channel.getNickname());
             CheckBox validCheckBox = (CheckBox) convertView.findViewById(R.id.channel_list_item_validCheckBox);
             validCheckBox.setChecked(channel.isValid());
-
             return convertView;
         }
     }

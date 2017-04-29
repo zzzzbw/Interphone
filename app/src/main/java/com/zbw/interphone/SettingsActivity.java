@@ -6,12 +6,17 @@ import android.app.Fragment;
 import com.zbw.interphone.base.SingleFragmentActivity;
 
 /**
- * Created by ZBW on 2017/4/5.
+ * Created by zbw on 2017/4/4.
  */
 
-public class ChannelListActivity extends SingleFragmentActivity {
+public class SettingsActivity extends SingleFragmentActivity {
+
+
+
     @Override
     protected Fragment createFragment() {
-        return new ChannelListFragment();
+        return new SettingsFragment();
     }
+
+
 }

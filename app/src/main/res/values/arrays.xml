@@ -56,7 +56,7 @@
         <item>复活</item>
         <item>扰频</item>
     </string-array>
-    
+
     <string-array name="channelSpacing_values">
         <item>宽带</item>
         <item>窄带</item>
@@ -71,11 +71,26 @@
         <item>普通扫描信道</item>
         <item>优先扫描信道</item>
     </string-array>
-    
+
     <string-array name="CTCSSType_values">
         <item>无</item>
         <item>亚音频</item>
         <item>正向亚音频</item>
         <item>反向亚音频</item>
+    </string-array>
+
+    <string-array name="device_values">
+        <item>COM0</item>
+        <item>COM1</item>
+        <item>COM2</item>
+        <item>COM3</item>
+        <item>COM4</item>
+    </string-array>
+
+    <string-array name="listen_time_values">
+        <item>无限时</item>
+        <item>短时</item>
+        <item>中时</item>
+        <item>长时</item>
     </string-array>
 </resources>

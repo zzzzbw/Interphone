@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewJZLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/JZ_level" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewTimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/timer" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewSKZYLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/SKZY_level" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewKeyA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/key_A" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewKeyB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/key_B" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewKeyC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/key_C" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewKeyD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/key_D" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewPowerSaving"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:canNav="true"
+            app:title="电池省电功能开启" />
+
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewIdRecognition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:canNav="true"
+            app:title="PTT ID识别键音开启" />
+
+    </LinearLayout>
+
+</ScrollView>

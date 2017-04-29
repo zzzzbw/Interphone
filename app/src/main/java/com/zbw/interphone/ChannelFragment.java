@@ -4,18 +4,19 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.zbw.interphone.model.ChannelList;
 import com.zbw.interphone.model.InterphoneChannel;
 import com.zbw.interphone.util.ResourceUtil;
+import com.zbw.interphone.view.LineSettingView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,9 +24,7 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 
 /**
  * Created by ZBW on 2017/4/9.
@@ -34,50 +33,51 @@ import butterknife.OnTextChanged;
 public class ChannelFragment extends Fragment {
     public static final String EXTRA_CHANNEL_ID = "com.zbw.interphont.channel_id";
 
-    private InterphoneChannel channel;
+    private InterphoneChannel mChannel;
     private Activity mAppActivity;
 
     private ResourceUtil RUtil;
 
-    @BindView(R.id.channel_nicknameEditText)
-    public EditText nicknameEditText;
-    @BindView(R.id.channel_channelSpacingButton)
-    public Button channelSpacingButton;
-    @BindView(R.id.channel_powerLevelButton)
-    public Button powerLevelButton;
-    @BindView(R.id.channel_firstScanButton)
-    public Button firstScanButton;
-    @BindView(R.id.channel_scanListButton)
-    public Button scanListButton;
+    @BindView(R.id.viewChannelNickname)
+    public LineSettingView viewChannelNickname;
+    @BindView(R.id.viewChannelSpacing)
+    public LineSettingView viewChannelSpacing;
+    @BindView(R.id.viewPowerLevel)
+    public LineSettingView viewPowerLevel;
+    @BindView(R.id.viewFirstScan)
+    public LineSettingView viewFirstScan;
+    @BindView(R.id.viewScanList)
+    public LineSettingView viewScanList;
 
-    @BindView(R.id.channel_receive_rateEditText)
-    public EditText receiveRateEditText;
-    @BindView(R.id.channel_receive_CTCSSTypeButton)
-    public Button receiveCTCSSTypeButton;
-    @BindView(R.id.channel_receive_CTCSSRateButton)
-    public Button receiveCTCSSRateButton;
-    @BindView(R.id.channel_receive_CTCSSCodeButton)
-    public Button receiveCTCSSCodeButton;
+    @BindView(R.id.viewValid)
+    public LineSettingView viewValid;
+    @BindView(R.id.viewPTTId)
+    public LineSettingView viewPTTId;
+    @BindView(R.id.viewChoiceCall)
+    public LineSettingView viewChoiceCall;
+    @BindView(R.id.viewBusyDeny)
+    public LineSettingView viewBusyDeny;
+    @BindView(R.id.viewInterfere)
+    public LineSettingView viewInterfere;
 
-    @BindView(R.id.channel_launch_rateEditText)
-    public EditText launchRateEditText;
-    @BindView(R.id.channel_launch_CTCSSTypeButton)
-    public Button launchCTCSSTypeButton;
-    @BindView(R.id.channel_launch_CTCSSRateButton)
-    public Button launchCTCSSRateButton;
-    @BindView(R.id.channel_launch_CTCSSCodeButton)
-    public Button launchCTCSSCodeButton;
+    @BindView(R.id.viewReceiveRate)
+    public LineSettingView viewReceiveRate;
+    @BindView(R.id.viewReceiveCTCSSType)
+    public LineSettingView viewReceiveCTCSSType;
+    @BindView(R.id.viewReceiveCTCSSRate)
+    public LineSettingView viewReceiveCTCSSRate;
+    @BindView(R.id.viewReceiveCTCSSCode)
+    public LineSettingView viewReceiveCTCSSCode;
 
-    @BindView(R.id.channel_validCheckBox)
-    public CheckBox validCheckBox;
-    @BindView(R.id.channel_PTTIDCheckBox)
-    public CheckBox PTTIDCheckBox;
-    @BindView(R.id.channel_choiceCallCheckBox)
-    public CheckBox choiceCallCheckBox;
-    @BindView(R.id.channel_busyDenyCheckBox)
-    public CheckBox busyDenyCheckBox;
-    @BindView(R.id.channel_interfereCheckBox)
-    public CheckBox interfereCheckBox;
+    @BindView(R.id.viewLaunchRate)
+    public LineSettingView viewLaunchRate;
+    @BindView(R.id.viewLaunchCTCSSType)
+    public LineSettingView viewLaunchCTCSSType;
+    @BindView(R.id.viewLaunchCTCSSRate)
+    public LineSettingView viewLaunchCTCSSRate;
+    @BindView(R.id.viewLaunchCTCSSCode)
+    public LineSettingView viewLaunchCTCSSCode;
+
 
     public static ChannelFragment newInstance(UUID channelId) {
         Bundle args = new Bundle();
@@ -93,7 +93,7 @@ public class ChannelFragment extends Fragment {
         mAppActivity = getActivity();
         RUtil = new ResourceUtil(mAppActivity);
         UUID channel_id = (UUID) getArguments().getSerializable(EXTRA_CHANNEL_ID);
-        channel = ChannelList.get(mAppActivity).getChannel(channel_id);
+        mChannel = ChannelList.get(mAppActivity).getChannel(channel_id);
     }
 
     @Nullable
@@ -101,85 +101,89 @@ public class ChannelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_channel, container, false);
         ButterKnife.bind(this, view);
-        nicknameEditText.setText(channel.getNickname());
-        channelSpacingButton.setText(RUtil.getShowResource(R.array.channelSpacing_values, channel.getChannelSpacing()));
-        powerLevelButton.setText(RUtil.getShowResource(R.array.powerLevel_values, channel.getPowerLevel()));
-        firstScanButton.setText(RUtil.getShowResource(R.array.firstScan_values, channel.getFirstScan()));
-        scanListButton.setText("无");
 
-        receiveRateEditText.setText(channel.getReceiveRate() + "");
-        receiveCTCSSTypeButton.setText(RUtil.getShowResource(R.array.CTCSSType_values, channel.getReceiveCTCSSType()));
-        receiveCTCSSRateButton.setText(channel.getReceiveCTCSSRate() + "");
-        receiveCTCSSCodeButton.setText(channel.getReceiveCTCSSCode() + "");
 
-        launchRateEditText.setText(channel.getLaunchRate() + "");
-        launchCTCSSTypeButton.setText(RUtil.getShowResource(R.array.CTCSSType_values, channel.getLaunchCTCSSType()));
-        launchCTCSSRateButton.setText(channel.getLaunchCTCSSRate() + "");
-        launchCTCSSCodeButton.setText(channel.getLaunchCTCSSCode() + "");
+        viewChannelNickname.setContent(mChannel.getNickname());
+        viewChannelSpacing.setContent(RUtil.getShowResource(R.array.channelSpacing_values, mChannel.getChannelSpacing()));
+        viewPowerLevel.setContent(RUtil.getShowResource(R.array.powerLevel_values, mChannel.getPowerLevel()));
+        viewFirstScan.setContent(RUtil.getShowResource(R.array.firstScan_values, mChannel.getFirstScan()));
+        viewScanList.setContent("无");
 
-        validCheckBox.setChecked(channel.isValid());
-        PTTIDCheckBox.setChecked(channel.isPTTID());
-        choiceCallCheckBox.setChecked(channel.isChoiceCall());
-        busyDenyCheckBox.setChecked(channel.isBusyDeny());
-        interfereCheckBox.setChecked(channel.isInterfere());
+        viewReceiveRate.setContent(mChannel.getReceiveRate() + "");
+        viewReceiveCTCSSType.setContent(RUtil.getShowResource(R.array.CTCSSType_values, mChannel.getReceiveCTCSSType()));
+        viewReceiveCTCSSRate.setContent(mChannel.getReceiveCTCSSRate() + "");
+        viewReceiveCTCSSCode.setContent(mChannel.getReceiveCTCSSCode() + "");
+
+        viewLaunchRate.setContent(mChannel.getLaunchRate() + "");
+        viewLaunchCTCSSType.setContent(RUtil.getShowResource(R.array.CTCSSType_values, mChannel.getLaunchCTCSSType()));
+        viewLaunchCTCSSRate.setContent(mChannel.getLaunchCTCSSRate() + "");
+        viewLaunchCTCSSCode.setContent(mChannel.getLaunchCTCSSCode() + "");
+
+        setSwtiches();
         return view;
     }
 
-    @OnClick({R.id.channel_channelSpacingButton,
-            R.id.channel_powerLevelButton,
-            R.id.channel_firstScanButton,
-            R.id.channel_scanListButton,
-            R.id.channel_receive_CTCSSTypeButton,
-            R.id.channel_receive_CTCSSRateButton,
-            R.id.channel_receive_CTCSSCodeButton,
-            R.id.channel_launch_CTCSSTypeButton,
-            R.id.channel_launch_CTCSSRateButton,
-            R.id.channel_launch_CTCSSCodeButton})
-    public void createDialog(final Button button) {
+
+    @OnClick({R.id.viewChannelSpacing,
+            R.id.viewPowerLevel,
+            R.id.viewFirstScan,
+            R.id.viewScanList,
+            R.id.viewReceiveCTCSSType,
+            R.id.viewReceiveCTCSSRate,
+            R.id.viewReceiveCTCSSCode,
+            R.id.viewLaunchCTCSSType,
+            R.id.viewLaunchCTCSSRate,
+            R.id.viewLaunchCTCSSCode})
+    public void createChoiceListDialog(final LineSettingView view) {
         int title = 0, items = 0;
-        final int index = -1;
+        int index = -1;
         Method setMethod = null;
 
         try {
-            switch (button.getId()) {
-                case R.id.channel_channelSpacingButton:
+            switch (view.getId()) {
+                case R.id.viewChannelSpacing:
                     title = R.string.channel_spacing;
                     items = R.array.channelSpacing_values;
+                    index = mChannel.getChannelSpacing();
                     setMethod = InterphoneChannel.class.getMethod("setChannelSpacing", int.class);
                     break;
-                case R.id.channel_powerLevelButton:
+                case R.id.viewPowerLevel:
                     title = R.string.power_level;
                     items = R.array.powerLevel_values;
+                    index = mChannel.getPowerLevel();
                     setMethod = InterphoneChannel.class.getMethod("setPowerLevel", int.class);
                     break;
-                case R.id.channel_firstScanButton:
+                case R.id.viewFirstScan:
                     title = R.string.first_scan;
                     items = R.array.firstScan_values;
+                    index = mChannel.getFirstScan();
                     setMethod = InterphoneChannel.class.getMethod("setFirstScan", int.class);
                     break;
-                case R.id.channel_receive_CTCSSTypeButton:
+                case R.id.viewReceiveCTCSSType:
                     title = R.string.CTCSS_type;
                     items = R.array.CTCSSType_values;
+                    index = mChannel.getReceiveCTCSSType();
                     setMethod = InterphoneChannel.class.getMethod("setReceiveCTCSSType", int.class);
                     break;
-                case R.id.channel_receive_CTCSSRateButton:
+                case R.id.viewReceiveCTCSSRate:
                     title = R.string.CTCSS_rate;
                     setMethod = InterphoneChannel.class.getMethod("setReceiveCTCSSRate", float.class);
                     break;
-                case R.id.channel_receive_CTCSSCodeButton:
+                case R.id.viewReceiveCTCSSCode:
                     title = R.string.CTCSS_code;
                     setMethod = InterphoneChannel.class.getMethod("setReceiveCTCSSCode", float.class);
                     break;
-                case R.id.channel_launch_CTCSSTypeButton:
+                case R.id.viewLaunchCTCSSType:
                     title = R.string.CTCSS_type;
                     items = R.array.CTCSSType_values;
+                    index = mChannel.getLaunchCTCSSType();
                     setMethod = InterphoneChannel.class.getMethod("setLaunchCTCSSType", int.class);
                     break;
-                case R.id.channel_launch_CTCSSRateButton:
+                case R.id.viewLaunchCTCSSRate:
                     title = R.string.CTCSS_rate;
                     setMethod = InterphoneChannel.class.getMethod("setLaunchCTCSSRate", float.class);
                     break;
-                case R.id.channel_launch_CTCSSCodeButton:
+                case R.id.viewLaunchCTCSSCode:
                     title = R.string.CTCSS_code;
                     setMethod = InterphoneChannel.class.getMethod("setLaunchCTCSSCode", float.class);
                     break;
@@ -197,11 +201,15 @@ public class ChannelFragment extends Fragment {
                 .itemsCallbackSingleChoice(index, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        if (text == null) {
+                            return false;
+                        }
+
                         int value = RUtil.getIndex(finalItems, text.toString());
                         if (finalSetMethod != null) {
                             try {
-                                finalSetMethod.invoke(channel, value);
-                                ChannelList.get(mAppActivity).updateChannel(channel);
+                                finalSetMethod.invoke(mChannel, value);
+                                ChannelList.get(mAppActivity).updateChannel(mChannel);
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             } catch (InvocationTargetException e) {
@@ -209,7 +217,7 @@ public class ChannelFragment extends Fragment {
                             }
 
                         }
-                        button.setText(text);
+                        view.setContent(text.toString());
                         return true;
                     }
                 })
@@ -217,56 +225,118 @@ public class ChannelFragment extends Fragment {
                 .show();
     }
 
-    @OnCheckedChanged({R.id.channel_validCheckBox,
-            R.id.channel_PTTIDCheckBox,
-            R.id.channel_choiceCallCheckBox,
-            R.id.channel_busyDenyCheckBox,
-            R.id.channel_interfereCheckBox})
-    public void clickCheckBox(final CheckBox checkbox) {
-        switch (checkbox.getId()) {
-            case R.id.channel_PTTIDCheckBox:
-                channel.setPTTID(checkbox.isChecked());
-                break;
-            case R.id.channel_choiceCallCheckBox:
-                channel.setChoiceCall(checkbox.isChecked());
-                break;
-            case R.id.channel_busyDenyCheckBox:
-                channel.setBusyDeny(checkbox.isChecked());
-                break;
-            case R.id.channel_interfereCheckBox:
-                channel.setInterfere(checkbox.isChecked());
-                break;
-        }
-        ChannelList.get(mAppActivity).updateChannel(channel);
-    }
-
-    @OnTextChanged(value = R.id.channel_nicknameEditText, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void nicknameChange(CharSequence s, int start, int before, int count) {
-        channel.setNickname(s.toString());
-        ChannelList.get(mAppActivity).updateChannel(channel);
-    }
-
-    @OnTextChanged(value = R.id.channel_receive_rateEditText, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void receiveRateChange(CharSequence s, int start, int before, int count) {
-        float value = 0;
+    @OnClick({R.id.viewChannelNickname,
+            R.id.viewReceiveRate,
+            R.id.viewLaunchRate})
+    public void createInputDialog(final LineSettingView view) {
+        int title = 0, inputType = InputType.TYPE_CLASS_TEXT;
+        String inputPreFill = "", inputHint = "";
+        Method setMethod = null;
+        Class valueType = String.class;
         try {
-            value = Float.parseFloat(s.toString());
-        } catch (Exception e) {
+            switch (view.getId()) {
+                case R.id.viewChannelNickname:
+                    title = R.string.channel_nickname;
+                    inputHint = mAppActivity.getResources().getString(title);
+                    inputPreFill = mChannel.getNickname();
+                    setMethod = InterphoneChannel.class.getMethod("setNickname", String.class);
+                    valueType = String.class;
+                    break;
+                case R.id.viewReceiveRate:
+                    title = R.string.rate;
+                    inputType = InputType.TYPE_CLASS_PHONE;
+                    inputHint = mAppActivity.getResources().getString(title);
+                    inputPreFill = mChannel.getReceiveRate() + "";
+                    setMethod = InterphoneChannel.class.getMethod("setReceiveRate", float.class);
+                    valueType = Float.class;
+                    break;
+                case R.id.viewLaunchRate:
+                    title = R.string.rate;
+                    inputType = InputType.TYPE_CLASS_PHONE;
+                    inputHint = mAppActivity.getResources().getString(title);
+                    inputPreFill = mChannel.getLaunchRate() + "";
+                    setMethod = InterphoneChannel.class.getMethod("setLaunchRate", float.class);
+                    valueType = Float.class;
+                    break;
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
         }
-        channel.setReceiveRate(value);
-        ChannelList.get(mAppActivity).updateChannel(channel);
 
+        final Method finalSetMethod = setMethod;
+        final Class finalValueType = valueType;
+        new MaterialDialog.Builder(mAppActivity)
+                .title(title)
+                .inputType(inputType)
+                .input(inputHint, inputPreFill, false, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        if (finalSetMethod != null) {
+                            try {
+                                if (finalValueType == Float.class) {
+                                    finalSetMethod.invoke(mChannel, Float.parseFloat(input.toString()));
+                                } else if (finalValueType == String.class) {
+                                    finalSetMethod.invoke(mChannel, input.toString());
+                                }
+                                ChannelList.get(mAppActivity).updateChannel(mChannel);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
+                            view.setContent(input.toString());
+                        }
+                    }
+                }).show();
     }
 
-    @OnTextChanged(value = R.id.channel_launch_rateEditText, callback = OnTextChanged.Callback.TEXT_CHANGED)
-    public void launchRateChange(CharSequence s, int start, int before, int count) {
-        float value = 0;
-        try {
-            value = Float.parseFloat(s.toString());
-            channel.setLaunchRate(value);
-        } catch (Exception e) {
+
+    private void setSwtiches() {
+        viewValid.setSwitch(mChannel.isValid());
+        viewPTTId.setSwitch(mChannel.isPTTID());
+        viewChoiceCall.setSwitch(mChannel.isChoiceCall());
+        viewBusyDeny.setSwitch(mChannel.isBusyDeny());
+        viewInterfere.setSwitch(mChannel.isInterfere());
+
+        viewValid.setSwitchOnCheckedChangeListener(new SwitchOnCheckedChangeListener(viewValid));
+        viewPTTId.setSwitchOnCheckedChangeListener(new SwitchOnCheckedChangeListener(viewPTTId));
+        viewChoiceCall.setSwitchOnCheckedChangeListener(new SwitchOnCheckedChangeListener(viewChoiceCall));
+        viewBusyDeny.setSwitchOnCheckedChangeListener(new SwitchOnCheckedChangeListener(viewBusyDeny));
+        viewInterfere.setSwitchOnCheckedChangeListener(new SwitchOnCheckedChangeListener(viewInterfere));
+    }
+
+
+    private void clickSwitch(final LineSettingView view) {
+        switch (view.getId()) {
+            case R.id.viewValid:
+                mChannel.setValid(view.isSwitch());
+                break;
+            case R.id.viewPTTId:
+                mChannel.setPTTID(view.isSwitch());
+                break;
+            case R.id.viewChoiceCall:
+                mChannel.setChoiceCall(view.isSwitch());
+                break;
+            case R.id.viewBusyDeny:
+                mChannel.setBusyDeny(view.isSwitch());
+                break;
+            case R.id.viewInterfere:
+                mChannel.setInterfere(view.isSwitch());
+                break;
         }
-        channel.setLaunchRate(Float.parseFloat(s.toString()));
-        ChannelList.get(mAppActivity).updateChannel(channel);
+        ChannelList.get(mAppActivity).updateChannel(mChannel);
+    }
+
+    private class SwitchOnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
+        private LineSettingView mView;
+
+        public SwitchOnCheckedChangeListener(LineSettingView view) {
+            this.mView = view;
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            clickSwitch(mView);
+        }
     }
 }

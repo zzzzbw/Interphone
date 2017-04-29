@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingRight="@dimen/margin_medium"
+    android:paddingLeft="@dimen/margin_medium"
     android:orientation="vertical">
 
     <CheckBox
@@ -23,6 +25,7 @@
         android:paddingLeft="4dp"
         android:paddingTop="4dp"
         android:text="信道列表"
+        android:textSize="16dp"
         android:textStyle="bold" />
 
     <TextView
@@ -32,6 +35,7 @@
         android:layout_below="@id/channel_list_item_titleTextView"
         android:layout_toLeftOf="@id/channel_list_item_validCheckBox"
         android:padding="4dp"
-        android:text="信道别名" />
+        android:text="信道别名"
+        android:textSize="12dp"/>
 
 </RelativeLayout>

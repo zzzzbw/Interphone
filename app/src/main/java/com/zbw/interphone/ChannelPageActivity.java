@@ -7,11 +7,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.zbw.interphone.model.ChannelList;
 import com.zbw.interphone.model.InterphoneChannel;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by ZBW on 2017/4/9.
@@ -36,13 +38,41 @@ public class ChannelPageActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 InterphoneChannel channel = channels.get(position);
-                setTitle(channel.getNickname());
                 return ChannelFragment.newInstance(channel.getId());
             }
 
             @Override
             public int getCount() {
                 return channels.size();
+            }
+        });
+
+        UUID channelId = (UUID) getIntent().getSerializableExtra(ChannelFragment.EXTRA_CHANNEL_ID);
+        for (int i = 0; i < channels.size(); i++) {
+            if (channels.get(i).getId().equals(channelId)) {
+                viewPager.setCurrentItem(i);
+                setTitle(channels.get(i).getNickname());
+                break;
+            }
+        }
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                InterphoneChannel channel = channels.get(position);
+                if (channel.getNickname() != null) {
+                    setTitle(channel.getNickname());
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
     }

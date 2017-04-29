@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,307 +8,129 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:orientation="vertical">
 
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewChannelNickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/channel_nickname" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="信道别名:" />
-
-            <EditText
-                android:id="@+id/channel_nicknameEditText"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewChannelSpacing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/channel_spacing" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/channel_spacing" />
-
-            <Button
-                android:id="@+id/channel_channelSpacingButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewPowerLevel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/power_level" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/power_level" />
-
-            <Button
-                android:id="@+id/channel_powerLevelButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewFirstScan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/first_scan" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/first_scan" />
-
-            <Button
-                android:id="@+id/channel_firstScanButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewScanList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/scan_list" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/scan_list" />
-
-            <Button
-                android:id="@+id/channel_scanListButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <TextView
-            style="?android:listSeparatorTextViewStyle"
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewValid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="接收:" />
+            app:canNav="true"
+            app:title="@string/valid" />
 
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewPTTId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:canNav="true"
+            app:title="@string/PTT_id" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/rate" />
-
-            <EditText
-                android:id="@+id/channel_receive_rateEditText"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:numeric="integer" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewChoiceCall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:canNav="true"
+            app:title="@string/choice_call" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/CTCSS_type" />
-
-            <Button
-                android:id="@+id/channel_receive_CTCSSTypeButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewBusyDeny"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:canNav="true"
+            app:title="@string/busy_deny" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/CTCSS_rate" />
-
-            <Button
-                android:id="@+id/channel_receive_CTCSSRateButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewInterfere"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:canNav="true"
+            app:isBottom="true"
+            app:title="@string/interfere" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/CTCSS_code" />
-
-            <Button
-                android:id="@+id/channel_receive_CTCSSCodeButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <TextView
-            style="?android:listSeparatorTextViewStyle"
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewReceiveRate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="发射:" />
+            app:subject="接收"
+            app:title="@string/rate" />
 
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewReceiveCTCSSType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/CTCSS_type" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/rate" />
-
-            <EditText
-                android:id="@+id/channel_launch_rateEditText"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:numeric="integer" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewReceiveCTCSSRate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/CTCSS_rate" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/CTCSS_type" />
-
-            <Button
-                android:id="@+id/channel_launch_CTCSSTypeButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewReceiveCTCSSCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:isBottom="true"
+            app:title="@string/CTCSS_code" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/CTCSS_rate" />
 
-            <Button
-                android:id="@+id/channel_launch_CTCSSRateButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewLaunchRate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:subject="发射"
+            app:title="@string/rate" />
 
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/CTCSS_code" />
-
-            <Button
-                android:id="@+id/channel_launch_CTCSSCodeButton"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewLaunchCTCSSType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/CTCSS_type" />
 
-            <CheckBox
-                android:id="@+id/channel_validCheckBox"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/valid" />
-
-            <CheckBox
-                android:id="@+id/channel_PTTIDCheckBox"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:text="@string/PTT_id" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewLaunchCTCSSRate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:title="@string/CTCSS_rate" />
 
-            <CheckBox
-                android:id="@+id/channel_choiceCallCheckBox"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/choice_call" />
-
-            <CheckBox
-                android:id="@+id/channel_busyDenyCheckBox"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.5"
-                android:text="@string/busy_deny" />
-        </LinearLayout>
-
-        <CheckBox
-            android:id="@+id/channel_interfereCheckBox"
-            android:layout_width="100dp"
+        <com.zbw.interphone.view.LineSettingView
+            android:id="@+id/viewLaunchCTCSSCode"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/interfere" />
+            app:isBottom="true"
+            app:title="@string/CTCSS_code" />
 
 
     </LinearLayout>
+
 
 </ScrollView>

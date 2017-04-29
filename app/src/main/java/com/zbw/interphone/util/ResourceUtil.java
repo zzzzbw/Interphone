@@ -21,6 +21,8 @@ public class ResourceUtil {
         return "";
     }
 
+
+
     public int getIndex(int resource, String value){
         CharSequence[] items = mAppContext.getResources().getStringArray(resource);
         if (items.length > 0) {
@@ -32,4 +34,17 @@ public class ResourceUtil {
         }
         return -1;
     }
+
+    public String[] getStringRescourceList(int[] resource){
+        int size=resource.length;
+        if(size<=0){
+            return new String[0];
+        }
+        String[] showResource=new String[size];
+        for(int i=0;i<size;i++){
+            showResource[i]=mAppContext.getResources().getString(resource[i]);
+        }
+        return showResource;
+    }
+
 }

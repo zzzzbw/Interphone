@@ -3,11 +3,13 @@
 
 
     <string name="app_name">Interphone</string>
-    <string name="main_list_info">对讲机信息</string>
-    <string name="main_list_setting">整机设置</string>
+    <string name="main_list_info">机型频段</string>
+    <string name="main_list_settings">整机设置</string>
     <string name="main_list_channel">信道</string>
     <string name="main_list_DTMF">DTMF信令</string>
     <string name="main_list_scan">扫描</string>
+    <string name="main_list_software_setting">软件设置</string>
+
     <string name="JZ_level">静噪等级</string>
     <string name="timer">发射限时定时器</string>
     <string name="SKZY_level">声控增益级别</string>
@@ -17,6 +19,7 @@
     <string name="key_D">D键功能</string>
 
     <!--信道列表-->
+    <string name="channel_nickname">信道别名</string>
     <string name="channel_spacing">信道间隔</string>
     <string name="power_level">发射功率级别</string>
     <string name="first_scan">优先扫描</string>
@@ -31,6 +34,14 @@
     <string name="busy_deny">遇忙禁发</string>
     <string name="choice_call">选呼</string>
     <string name="interfere">扰频</string>
+    
+    <!--软件设置-->
+    <string name="device">串口</string>
+    <string name="listen_time">监听时长</string>
 
+    <string name="deviceConnectStateSuccess">已连接</string>
+    <string name="deviceConnectStateFailed">未连接</string>
+    <string name="deviceConnectStateWrite">写频中</string>
+    <string name="deviceConnectStateRead">读频中</string>
 
 </resources>

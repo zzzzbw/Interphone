@@ -18,7 +18,7 @@ public class ChannelList {
     private ChannelList(Context context) {
         mAppContext = context;
         channels = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 255; i++) {
             InterphoneChannel channel = new InterphoneChannel();
             channel.setNickname("#channel:" + i);
             channel.setValid(i % 2 == 0);
