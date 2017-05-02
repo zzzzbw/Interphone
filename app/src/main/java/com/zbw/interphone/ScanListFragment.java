@@ -6,18 +6,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.zbw.interphone.model.InterphoneGlobal;
 import com.zbw.interphone.model.ScanList;
 import com.zbw.interphone.view.LineSettingView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by ZBW on 2017/4/29.
@@ -50,6 +52,35 @@ public class ScanListFragment extends ListFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    private class LineSettingViewListener implements View.OnClickListener {
+
+        private int position;
+        private LineSettingView view;
+
+        public LineSettingViewListener(int position, LineSettingView view) {
+            this.position = position;
+            this.view = view;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int title = R.string.main_list_channel;
+            final String inputHint = mAppActivity.getResources().getString(title);
+            String inputPreFill = mScanList.getScanCode(position) + "";
+            new MaterialDialog.Builder(mAppActivity)
+                    .title(title)
+                    .inputType(InputType.TYPE_CLASS_NUMBER)
+                    .input(inputHint, inputPreFill, false, new MaterialDialog.InputCallback() {
+                        @Override
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                            int value = Integer.valueOf(input.toString());
+                            mScanList.setScanCode(position, value);
+                            view.setContent(input.toString());
+                        }
+                    }).show();
+        }
+    }
+
     private class ScanListAdapter extends ArrayAdapter<Integer> {
 
         public ScanListAdapter(ArrayList<Integer> scanCodeList) {
@@ -66,6 +97,7 @@ public class ScanListFragment extends ListFragment {
             String titlePre = mAppActivity.getResources().getString(R.string.scan_list_code);
             viewItem.setTitle(titlePre + ":" + (position + 1));
             viewItem.setContent(getItem(position).toString());
+            viewItem.setOnClickListener(new LineSettingViewListener(position, viewItem));
             return convertView;
         }
     }

@@ -2,6 +2,13 @@ package com.zbw.interphone.model;
 
 import android.content.Context;
 
+import com.zbw.interphone.util.InterphoneJSONSerializerUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 /**
  * Created by ZBW on 2017/4/5.
  */
@@ -12,18 +19,34 @@ public class InterphoneGlobal {
     private InterphoneSetting mSetting;
     private DTMFSetting mDTMFSetting;
     private InterphoneScan mScan;
+    private ChannelList mChannelList;
+
+    private InterphoneJSONSerializerUtil mSerializer;
+    private static final String FILENAME = "interphone.json";
+
+    private static final String JSON_INFO = "info";
+    private static final String JSON_SETTING = "setting";
+    private static final String JSON_DTMFSETTING = "DTMFsetting";
+    private static final String JSON_SCAN = "scan";
+    private static final String JSON_CHANNELLIST = "channelList";
 
     private static InterphoneGlobal sGloabl;
     private Context mAppContext;
 
+
+    /*
     private InterphoneGlobal(Context context) {
         mAppContext = context;
+        mSerializer = new InterphoneJSONSerializerUtil(mAppContext, FILENAME);
+
         //先写死初始数据
+
 
         mInfo = new InterphoneInfo();
         mInfo.setType("H328");
         mInfo.setChannel("150-174MHz");
         mInfo.setVersion("1.0");
+
 
         mSetting = new InterphoneSetting();
         mSetting.setJZLevel(4);
@@ -36,6 +59,7 @@ public class InterphoneGlobal {
         mSetting.setPowerSaving(false);
         mSetting.setIdRecognition(false);
 
+
         mDTMFSetting = new DTMFSetting();
         mDTMFSetting.setLaunchSpeed(3);
         mDTMFSetting.setFirstLaunchDelay(4);
@@ -44,7 +68,37 @@ public class InterphoneGlobal {
         mScan = new InterphoneScan();
         mScan.setScanSpaceTime(0);
         mScan.setScanShelveTime(9);
+
+        mChannelList = new ChannelList();
     }
+    */
+
+
+
+    private InterphoneGlobal(Context context){
+        mAppContext = context;
+        mSerializer = new InterphoneJSONSerializerUtil(mAppContext, FILENAME);
+        try {
+            JSONObject json = mSerializer.loadGlobal();
+
+            JSONObject jsonInfo = json.getJSONObject(JSON_INFO);
+            mInfo = new InterphoneInfo(jsonInfo);
+            JSONObject jsonSetting = json.getJSONObject(JSON_SETTING);
+            mSetting = new InterphoneSetting(jsonSetting);
+            JSONObject jsonDTMFSetting = json.getJSONObject(JSON_DTMFSETTING);
+            mDTMFSetting = new DTMFSetting(jsonDTMFSetting);
+            JSONObject jsonScan = json.getJSONObject(JSON_SCAN);
+            mScan = new InterphoneScan(jsonScan);
+            JSONObject jsonChannelList = json.getJSONObject(JSON_CHANNELLIST);
+            mChannelList = new ChannelList(jsonChannelList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public static InterphoneGlobal get(Context context) {
         if (sGloabl == null) {
@@ -52,6 +106,31 @@ public class InterphoneGlobal {
         }
         return sGloabl;
     }
+
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_INFO, mInfo.toJSON());
+        json.put(JSON_SETTING, mSetting.toJSON());
+        json.put(JSON_DTMFSETTING, mDTMFSetting.toJSON());
+        json.put(JSON_SCAN, mScan.toJSON());
+        json.put(JSON_CHANNELLIST, mChannelList.toJSON());
+        return json;
+    }
+
+    public boolean saveInterphone() {
+        try {
+            mSerializer.saveInterphone(sGloabl);
+            return true;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public InterphoneInfo getInfo() {
         return mInfo;
@@ -83,5 +162,13 @@ public class InterphoneGlobal {
 
     public void setScan(InterphoneScan mScan) {
         this.mScan = mScan;
+    }
+
+    public ChannelList getChannelList() {
+        return mChannelList;
+    }
+
+    public void setChannelList(ChannelList ChannelList) {
+        this.mChannelList = mChannelList;
     }
 }

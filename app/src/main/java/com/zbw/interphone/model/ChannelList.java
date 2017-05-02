@@ -1,6 +1,9 @@
 package com.zbw.interphone.model;
 
-import android.content.Context;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -12,11 +15,10 @@ import java.util.UUID;
 public class ChannelList {
     private ArrayList<InterphoneChannel> channels;
 
-    private static ChannelList sChannelList;
-    private Context mAppContext;
+    private static final String JSON_CHANNELS = "channels";
 
-    private ChannelList(Context context) {
-        mAppContext = context;
+    public ChannelList(){
+
         channels = new ArrayList<>();
         for (int i = 0; i < 255; i++) {
             InterphoneChannel channel = new InterphoneChannel();
@@ -25,20 +27,34 @@ public class ChannelList {
             channel.setChannelSpacing(1);
             channels.add(channel);
         }
+
     }
 
-    public static ChannelList get(Context context) {
-        if (sChannelList == null) {
-            sChannelList = new ChannelList(context);
+    public ChannelList(JSONObject json) throws JSONException {
+        JSONArray array=json.getJSONArray(JSON_CHANNELS);
+        channels = new ArrayList<>();
+        for(int i=0;i<array.length();i++){
+            InterphoneChannel channel=new InterphoneChannel(array.getJSONObject(i));
+            channels.add(channel);
         }
-        return sChannelList;
+
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < channels.size(); i++) {
+            jsonArray.put(channels.get(i).toJSON());
+        }
+        json.put(JSON_CHANNELS, jsonArray);
+        return json;
     }
 
     public ArrayList<InterphoneChannel> getChannels() {
         return channels;
     }
 
-    public InterphoneChannel getChannel(UUID id) {
+    public InterphoneChannel getChannel(String id) {
         for (InterphoneChannel channel : channels) {
             if (channel.getId().equals(id)) {
                 return channel;

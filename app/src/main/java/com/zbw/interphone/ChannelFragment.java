@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,8 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.zbw.interphone.model.ChannelList;
 import com.zbw.interphone.model.InterphoneChannel;
+import com.zbw.interphone.model.InterphoneGlobal;
 import com.zbw.interphone.util.ResourceUtil;
 import com.zbw.interphone.view.LineSettingView;
 
@@ -32,6 +31,7 @@ import butterknife.OnClick;
 
 public class ChannelFragment extends Fragment {
     public static final String EXTRA_CHANNEL_ID = "com.zbw.interphone.channel_id";
+
 
     private InterphoneChannel mChannel;
     private Activity mAppActivity;
@@ -79,7 +79,7 @@ public class ChannelFragment extends Fragment {
     public LineSettingView viewLaunchCTCSSCode;
 
 
-    public static ChannelFragment newInstance(UUID channelId) {
+    public static ChannelFragment newInstance(String channelId) {
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_CHANNEL_ID, channelId);
         ChannelFragment fragment = new ChannelFragment();
@@ -92,8 +92,8 @@ public class ChannelFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mAppActivity = getActivity();
         RUtil = new ResourceUtil(mAppActivity);
-        UUID channel_id = (UUID) getArguments().getSerializable(EXTRA_CHANNEL_ID);
-        mChannel = ChannelList.get(mAppActivity).getChannel(channel_id);
+        String channel_id = (String) getArguments().getSerializable(EXTRA_CHANNEL_ID);
+        mChannel = InterphoneGlobal.get(mAppActivity).getChannelList().getChannel(channel_id);
     }
 
     @Nullable
@@ -209,7 +209,7 @@ public class ChannelFragment extends Fragment {
                         if (finalSetMethod != null) {
                             try {
                                 finalSetMethod.invoke(mChannel, value);
-                                ChannelList.get(mAppActivity).updateChannel(mChannel);
+                                InterphoneGlobal.get(mAppActivity).getChannelList().updateChannel(mChannel);
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             } catch (InvocationTargetException e) {
@@ -278,7 +278,7 @@ public class ChannelFragment extends Fragment {
                                 } else if (finalValueType == String.class) {
                                     finalSetMethod.invoke(mChannel, input.toString());
                                 }
-                                ChannelList.get(mAppActivity).updateChannel(mChannel);
+                                InterphoneGlobal.get(mAppActivity).getChannelList().updateChannel(mChannel);
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             } catch (InvocationTargetException e) {
@@ -324,7 +324,7 @@ public class ChannelFragment extends Fragment {
                 mChannel.setInterfere(view.isSwitch());
                 break;
         }
-        ChannelList.get(mAppActivity).updateChannel(mChannel);
+        InterphoneGlobal.get(mAppActivity).getChannelList().updateChannel(mChannel);
     }
 
     private class SwitchOnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {

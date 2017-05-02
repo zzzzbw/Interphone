@@ -7,10 +7,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-import com.zbw.interphone.model.ChannelList;
 import com.zbw.interphone.model.InterphoneChannel;
+import com.zbw.interphone.model.InterphoneGlobal;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -31,7 +30,7 @@ public class ChannelPageActivity extends AppCompatActivity {
         viewPager.setId(R.id.viewPager);
         setContentView(viewPager);
 
-        channels = ChannelList.get(this).getChannels();
+        channels = InterphoneGlobal.get(this).getChannelList().getChannels();
 
         FragmentManager fm = getSupportFragmentManager();
         viewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
@@ -47,7 +46,7 @@ public class ChannelPageActivity extends AppCompatActivity {
             }
         });
 
-        UUID channelId = (UUID) getIntent().getSerializableExtra(ChannelFragment.EXTRA_CHANNEL_ID);
+        String channelId = (String) getIntent().getSerializableExtra(ChannelFragment.EXTRA_CHANNEL_ID);
         for (int i = 0; i < channels.size(); i++) {
             if (channels.get(i).getId().equals(channelId)) {
                 viewPager.setCurrentItem(i);

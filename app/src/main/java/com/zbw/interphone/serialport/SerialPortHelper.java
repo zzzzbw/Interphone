@@ -21,6 +21,12 @@ import java.util.Arrays;
 public class SerialPortHelper {
     public static final String TAG = "SerialPortHelper";
 
+    public static final int SUCCESS = 0x0110;
+    public static final int IO_ERROR = 0X0111;
+    public static final int SECURITY_ERROR = 0x0112;
+    public static final int ERROR = 0x1113;
+
+
     private static final int NO_DEVICE = 0X1110;
     private static final int LISTEN_START = 0x1111;
     private static final int LISTEN_END = 0x1112;
@@ -65,15 +71,28 @@ public class SerialPortHelper {
         };
     }
 
-    public boolean setupPort() throws IOException,SecurityException {
-        sp = new SerialPort(new File(mSoftwareSetting.getDevice()), 9600);
+    public int setupPort() {
+        try {
+            sp = new SerialPort(new File(mSoftwareSetting.getDevice()), 9600);
+        } catch (IOException e) {
+            e.printStackTrace();
+            mOutputStream = null;
+            mInputStream = null;
+            return IO_ERROR;
+        } catch (SecurityException e) {
+            e.printStackTrace();
+            mOutputStream = null;
+            mInputStream = null;
+            return SECURITY_ERROR;
+        }
+
 
         mOutputStream = (FileOutputStream) sp.getOutputStream();
         mInputStream = (FileInputStream) sp.getInputStream();
         if (mOutputStream != null && mInputStream != null) {
-            return true;
+            return SUCCESS;
         }
-        return false;
+        return ERROR;
     }
 
     public void listenPort() {
@@ -92,7 +111,7 @@ public class SerialPortHelper {
     }
 
 
-    private int handshake(int state, byte[] buffer, int size) throws IOException {
+    private int handShake(int state, byte[] buffer, int size) throws IOException {
         if (mOutputStream == null) {
             mToastHandler.sendEmptyMessage(NO_DEVICE);
             return -1;
@@ -135,14 +154,18 @@ public class SerialPortHelper {
 
     }
 
-    private int ReceiveData(byte[] buffer, int size) throws IOException {
+    private int writeData(byte[] buffer, int size) throws IOException {
+        return 1;
+    }
+
+    private int receiveData(byte[] buffer, int size) throws IOException {
         if (mOutputStream == null) {
             mToastHandler.sendEmptyMessage(NO_DEVICE);
             return 1;
         }
         byte[] temp = new byte[size];
         System.arraycopy(buffer, 0, temp, 0, size);
-        Log.d(TAG, "ReceiveData  array: " + Arrays.toString(temp));
+        Log.d(TAG, "receiveData  array: " + Arrays.toString(temp));
 
         mOutputStream = (FileOutputStream) sp.getOutputStream();
         mOutputStream.write(ProtocolConstant.ACK);
@@ -171,14 +194,14 @@ public class SerialPortHelper {
                     size = mInputStream.read(buffer);
 
                     if (size > 0) {
-                        state = handshake(state, buffer, size);
+                        state = handShake(state, buffer, size);
                         if (state == -1) {
                             mToastHandler.sendEmptyMessage(HANDSHAKE_FALSE);
                             break;
                         }
                         if (state == 3) {
                             mToastHandler.sendEmptyMessage(HANDSHAKE_SUCCESS);
-                            ReceiveData(buffer, size);
+                            receiveData(buffer, size);
                             break;
                         }
                     }

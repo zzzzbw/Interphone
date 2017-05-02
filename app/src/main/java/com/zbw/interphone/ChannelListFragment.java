@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.zbw.interphone.model.ChannelList;
 import com.zbw.interphone.model.InterphoneChannel;
+import com.zbw.interphone.model.InterphoneGlobal;
 
 import java.util.ArrayList;
 
@@ -24,17 +25,21 @@ import java.util.ArrayList;
  */
 
 public class ChannelListFragment extends ListFragment {
-    private ArrayList<InterphoneChannel> channels;
-
     private Activity mAppActivity;
+    private InterphoneGlobal mGlobal;
+    private ChannelList mChannelList;
+    private ArrayList<InterphoneChannel> mChannels;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAppActivity = getActivity();
-        channels = ChannelList.get(mAppActivity).getChannels();
+        mGlobal = InterphoneGlobal.get(mAppActivity);
+        mChannelList = mGlobal.getChannelList();
+        mChannels = mChannelList.getChannels();
 
-        ArrayAdapter<InterphoneChannel> arrayAdapter = new ChannelAdapter(channels);
+        ArrayAdapter<InterphoneChannel> arrayAdapter = new ChannelAdapter(mChannels);
         setListAdapter(arrayAdapter);
     }
 

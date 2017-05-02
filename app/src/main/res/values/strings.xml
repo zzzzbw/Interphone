@@ -8,7 +8,7 @@
     <string name="main_list_channel">信道</string>
     <string name="main_list_DTMF">DTMF信令</string>
     <string name="main_list_scan">扫描</string>
-    <string name="main_list_software_setting">软件设置</string>
+    <string name="main_list_save">保存设置</string>
 
     <string name="JZ_level">静噪等级</string>
     <string name="timer">发射限时定时器</string>
@@ -69,7 +69,8 @@
     <string name="listen_time">监听时长</string>
 
     <string name="deviceConnectStateSuccess">已连接</string>
-    <string name="deviceConnectStateFailed">未连接</string>
+    <string name="deviceConnectStateNone">未连接</string>
+    <string name="deviceConnectStateFailed">连接失败</string>
     <string name="deviceConnectStateWrite">写频中</string>
     <string name="deviceConnectStateRead">读频中</string>
 

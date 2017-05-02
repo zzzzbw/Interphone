@@ -22,11 +22,14 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.zbw.interphone.model.DeviceSetting;
+import com.zbw.interphone.model.InterphoneGlobal;
+import com.zbw.interphone.model.InterphoneInfo;
+import com.zbw.interphone.model.InterphoneSetting;
 import com.zbw.interphone.serialport.SerialPortHelper;
 import com.zbw.interphone.util.FileUtil;
+import com.zbw.interphone.util.InterphoneJSONSerializerUtil;
 import com.zbw.interphone.util.ResourceUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -42,6 +45,7 @@ public class MainFragment extends Fragment {
     private DeviceSetting mDeviceSetting;
     private AppCompatActivity mAppActivity;
     private SerialPortHelper mPortHelper;
+
 
     private ResourceUtil RUtil;
 
@@ -78,6 +82,7 @@ public class MainFragment extends Fragment {
     private final static int MAIN_CHANNEL = R.string.main_list_channel;
     private final static int MAIN_DTMF = R.string.main_list_DTMF;
     private final static int MAIN_SCAN = R.string.main_list_scan;
+    private final static int MAIN_SAVE = R.string.main_list_save;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +91,7 @@ public class MainFragment extends Fragment {
         mDeviceSetting = DeviceSetting.get(mAppActivity);
         mPortHelper = new SerialPortHelper(mAppActivity);
         RUtil = new ResourceUtil(mAppActivity);
-        int[] resId = {MAIN_INFO, MAIN_SETTINGS, MAIN_CHANNEL, MAIN_DTMF, MAIN_SCAN};
+        int[] resId = {MAIN_INFO, MAIN_SETTINGS, MAIN_CHANNEL, MAIN_DTMF, MAIN_SCAN, MAIN_SAVE};
         lvs = RUtil.getStringRescourceList(resId);
 
     }
@@ -132,6 +137,9 @@ public class MainFragment extends Fragment {
                     case 4:
                         goScanActivity();
                         break;
+                    case 5:
+                        saveData();
+                        break;
                     default:
                         Toast.makeText(mAppActivity, "没有此选项", Toast.LENGTH_SHORT).show();
                         break;
@@ -144,7 +152,6 @@ public class MainFragment extends Fragment {
 
     @OnClick(R.id.buttonSelectDevice)
     public void onClickButtonSelectDevice() {
-        //int index = RUtil.getIndex(R.array.device_values, mDeviceSetting.getDevice());
         int index = -1;
         ArrayList<String> deviceList = FileUtil.getFiles("/dev", "tty");
         new MaterialDialog.Builder(mAppActivity)
@@ -173,23 +180,26 @@ public class MainFragment extends Fragment {
             Toast.makeText(mAppActivity, "请先选择串口", Toast.LENGTH_SHORT).show();
             return;
         }
-        try {
-            if (mPortHelper.setupPort()) {
-                textViewConnectState.setText(R.string.deviceConnectStateSuccess);
-                textViewConnectState.setTextColor(ContextCompat.getColor(mAppActivity, R.color.colorWhite));
-                Toast.makeText(mAppActivity, "连接串口成功", Toast.LENGTH_SHORT).show();
-            } else {
-                textViewConnectState.setText(R.string.deviceConnectStateFailed);
-                textViewConnectState.setTextColor(ContextCompat.getColor(mAppActivity, R.color.colorAccent));
-                Toast.makeText(mAppActivity, "连接串口失败", Toast.LENGTH_SHORT).show();
-            }
-        } catch (IOException e) {
+
+        int portState = mPortHelper.setupPort();
+        if (portState == mPortHelper.SUCCESS) {
+            textViewConnectState.setText(R.string.deviceConnectStateSuccess);
+            textViewConnectState.setTextColor(ContextCompat.getColor(mAppActivity, R.color.colorWhite));
+            Toast.makeText(mAppActivity, "连接串口成功", Toast.LENGTH_SHORT).show();
+        } else if (portState == mPortHelper.ERROR) {
+            textViewConnectState.setText(R.string.deviceConnectStateNone);
+            textViewConnectState.setTextColor(ContextCompat.getColor(mAppActivity, R.color.colorAccent));
+            Toast.makeText(mAppActivity, "连接串口失败", Toast.LENGTH_SHORT).show();
+        } else if (portState == mPortHelper.IO_ERROR) {
+            textViewConnectState.setText(R.string.deviceConnectStateFailed);
+            textViewConnectState.setTextColor(ContextCompat.getColor(mAppActivity, R.color.colorAccent));
             Toast.makeText(mAppActivity, "连接串口失败,IO错误", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        } catch (SecurityException e) {
+        } else if (portState == mPortHelper.SECURITY_ERROR) {
+            textViewConnectState.setText(R.string.deviceConnectStateFailed);
+            textViewConnectState.setTextColor(ContextCompat.getColor(mAppActivity, R.color.colorAccent));
             Toast.makeText(mAppActivity, "连接串口失败，权限错误", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
         }
+
     }
 
     @OnClick(R.id.buttonWriteDevice)
@@ -204,18 +214,27 @@ public class MainFragment extends Fragment {
 
 
     private void createInfoDialog() {
-        /*
+
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .title(getActivity().getString(R.string.main_list_info))
                 .customView(R.layout.list_info, true)
                 .negativeText(android.R.string.cancel)
                 .build();
         View view = dialog.getCustomView();
-        ((TextView) view.findViewById(R.id.InterphoneInfo_type)).setText(mInfo.getType());
-        ((TextView) view.findViewById(R.id.InterphoneInfo_channel)).setText(mInfo.getChannel());
-        ((TextView) view.findViewById(R.id.InterphoneInfo_version)).setText(mInfo.getVersion());
+        InterphoneInfo info = InterphoneGlobal.get(mAppActivity).getInfo();
+        ((TextView) view.findViewById(R.id.InterphoneInfo_type)).setText(info.getType());
+        ((TextView) view.findViewById(R.id.InterphoneInfo_channel)).setText(info.getChannel());
+        ((TextView) view.findViewById(R.id.InterphoneInfo_version)).setText(info.getVersion());
         dialog.show();
-        */
+
+    }
+
+    private void saveData() {
+        if (InterphoneGlobal.get(mAppActivity).saveInterphone()) {
+            Toast.makeText(mAppActivity, "保存成功", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mAppActivity, "保存失败", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void goSettingsActivity() {

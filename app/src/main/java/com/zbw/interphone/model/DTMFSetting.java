@@ -1,5 +1,8 @@
 package com.zbw.interphone.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by ZBW on 2017/4/29.
  */
@@ -20,6 +23,62 @@ public class DTMFSetting {
     private String YBCode;
     private String YYCode;
     private String reviveCode;
+
+    private static final String JSON_LAUNCHSPEED = "launchSpeed";
+    private static final String JSON_FIRSTLAUNCHDELAY = "firstLaunchDelay";
+    private static final String JSON_FIRSTLAUNCHTIME = "firstLaunchTime";
+    private static final String JSON_CALLCODE1 = "callCode1";
+    private static final String JSON_CALLCODE2 = "callCode2";
+    private static final String JSON_CALLCODE3 = "callCode3";
+    private static final String JSON_PTTIDCODE = "PTTIdCode";
+
+    private static final String JSON_PERSONID = "personId";
+    private static final String JSON_TEAMID = "teamId";
+    private static final String JSON_GROUPID = "groupId";
+    private static final String JSON_YBCODE = "YBCode";
+    private static final String JSON_YYCODE = "YYCode";
+    private static final String JSON_REVIVECODE = "reviveCode";
+
+
+    public DTMFSetting() {
+    }
+
+    ;
+
+    public DTMFSetting(JSONObject json) throws JSONException {
+        launchSpeed = json.getInt(JSON_LAUNCHSPEED);
+        firstLaunchDelay = json.getInt(JSON_FIRSTLAUNCHDELAY);
+        firstLaunchTime = json.getInt(JSON_FIRSTLAUNCHTIME);
+        callCode1 = json.optString(JSON_CALLCODE1, "");
+        callCode2 = json.optString(JSON_CALLCODE2, "");
+        callCode3 = json.optString(JSON_CALLCODE3, "");
+        PTTIdCode = json.optString(JSON_PERSONID, "");
+        personId = json.optString(JSON_PERSONID, "");
+        teamId = json.optString(JSON_TEAMID, "");
+        groupId = json.optString(JSON_GROUPID, "");
+        YBCode = json.optString(JSON_YBCODE, "");
+        YYCode = json.optString(JSON_YYCODE, "");
+        reviveCode = json.optString(JSON_REVIVECODE, "");
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_LAUNCHSPEED, launchSpeed);
+        json.put(JSON_FIRSTLAUNCHDELAY, firstLaunchDelay);
+        json.put(JSON_FIRSTLAUNCHTIME, firstLaunchTime);
+        json.put(JSON_CALLCODE1, callCode1);
+        json.put(JSON_CALLCODE2, callCode2);
+        json.put(JSON_CALLCODE3, callCode3);
+        json.put(JSON_PTTIDCODE, PTTIdCode);
+        json.put(JSON_PERSONID, personId);
+        json.put(JSON_TEAMID, teamId);
+        json.put(JSON_GROUPID, groupId);
+        json.put(JSON_YBCODE, YBCode);
+        json.put(JSON_YYCODE, YYCode);
+        json.put(JSON_REVIVECODE, reviveCode);
+        return json;
+    }
+
 
     public int getLaunchSpeed() {
         return launchSpeed;

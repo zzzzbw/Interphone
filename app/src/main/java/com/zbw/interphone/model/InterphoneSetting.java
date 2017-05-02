@@ -1,6 +1,8 @@
 package com.zbw.interphone.model;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by zbw on 2017/4/4.
@@ -16,6 +18,47 @@ public class InterphoneSetting {
     private int keyD;
     private boolean powerSaving;
     private boolean idRecognition;
+
+    private static final String JSON_JZLEVEL = "JZLevel";
+    private static final String JSON_TIMER = "timer";
+    private static final String JSON_SKZYLEVEL = "SKZYLevel";
+    private static final String JSON_KEYA = "keyA";
+    private static final String JSON_KEYB = "keyB";
+    private static final String JSON_KEYC = "keyC";
+    private static final String JSON_KEYD = "keyD";
+    private static final String JSON_POWERSAVING = "powerSaving";
+    private static final String JSON_IDRECOGNITION = "idRecognition";
+
+
+    public InterphoneSetting(){};
+
+    public InterphoneSetting(JSONObject json) throws JSONException {
+        JZLevel = json.getInt(JSON_JZLEVEL);
+        timer = json.getInt(JSON_TIMER);
+        SKZYLevel = json.getInt(JSON_SKZYLEVEL);
+        keyA = json.getInt(JSON_KEYA);
+        keyB = json.getInt(JSON_KEYB);
+        keyC = json.getInt(JSON_KEYC);
+        keyD = json.getInt(JSON_KEYD);
+        powerSaving = json.getBoolean(JSON_POWERSAVING);
+        idRecognition = json.getBoolean(JSON_IDRECOGNITION);
+    }
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_JZLEVEL, JZLevel);
+        json.put(JSON_TIMER, timer);
+        json.put(JSON_SKZYLEVEL, SKZYLevel);
+        json.put(JSON_KEYA, keyA);
+        json.put(JSON_KEYB, keyB);
+        json.put(JSON_KEYC, keyC);
+        json.put(JSON_KEYD, keyD);
+        json.put(JSON_POWERSAVING, powerSaving);
+        json.put(JSON_IDRECOGNITION, idRecognition);
+        return json;
+    }
+
+
 
     public boolean isIdRecognition() {
         return idRecognition;
