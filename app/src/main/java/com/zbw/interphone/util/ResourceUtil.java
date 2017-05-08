@@ -22,8 +22,7 @@ public class ResourceUtil {
     }
 
 
-
-    public int getIndex(int resource, String value){
+    public int getIndex(int resource, String value) {
         CharSequence[] items = mAppContext.getResources().getStringArray(resource);
         if (items.length > 0) {
             for (int i = 0; i < items.length; i++) {
@@ -35,14 +34,26 @@ public class ResourceUtil {
         return -1;
     }
 
-    public String[] getStringRescourceList(int[] resource){
-        int size=resource.length;
-        if(size<=0){
+    public int getIndex(int resource, float value) {
+        CharSequence[] items = mAppContext.getResources().getStringArray(resource);
+        if (items.length > 0) {
+            for (int i = 0; i < items.length; i++) {
+                if (items[i].equals(value + "")) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public String[] getStringRescourceList(int[] resource) {
+        int size = resource.length;
+        if (size <= 0) {
             return new String[0];
         }
-        String[] showResource=new String[size];
-        for(int i=0;i<size;i++){
-            showResource[i]=mAppContext.getResources().getString(resource[i]);
+        String[] showResource = new String[size];
+        for (int i = 0; i < size; i++) {
+            showResource[i] = mAppContext.getResources().getString(resource[i]);
         }
         return showResource;
     }

@@ -7,29 +7,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     com_zbw_interphone_serialport_SerialPort
- * Method:    open
- * Signature: (Ljava/lang/String;I)Ljava/io/FileDescriptor;
- */
+
 JNIEXPORT jobject JNICALL Java_com_zbw_interphone_serialport_SerialPort_open
   (JNIEnv *, jclass, jstring, jint);
 
-/*
- * Class:     com_zbw_interphone_serialport_SerialPort
- * Method:    close
- * Signature: ()V
- */
+
 JNIEXPORT void JNICALL Java_com_zbw_interphone_serialport_SerialPort_close
   (JNIEnv *, jobject);
-
-/*
- * Class:     com_zbw_interphone_serialport_SerialPort
- * Method:    test
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_com_zbw_interphone_serialport_SerialPort_test
-  (JNIEnv *, jclass);
 
 #ifdef __cplusplus
 }

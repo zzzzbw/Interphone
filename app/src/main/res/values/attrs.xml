@@ -13,5 +13,4 @@
         <!-- 是否是列表中最后一个 -->
         <attr name="isBottom" format="boolean" />
     </declare-styleable>
-
 </resources>

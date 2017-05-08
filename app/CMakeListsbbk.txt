@@ -1,0 +1,29 @@
+#设置CMake的最低要求版本号
+cmake_minimum_required(VERSION 3.4.1)
+
+#设置并关联cpp文件
+add_library( # 设置创建的cpp库名称
+             serial_port
+
+             # 将其设置成可共享的库
+             SHARED
+
+             # 关联代码文件
+             src/main/cpp/serial_port.cpp )
+
+#关联cpp头文件
+include_directories(src/main/cpp/include/)
+
+#添加CMake原生库
+find_library( # 设置原生库的名称
+              log-lib
+
+              #关联CMake原生库
+              log )
+
+#将CMake原生库关联到自己的cpp代码中
+ target_link_libraries( # 目标库（自己创建的cpp文件）
+                        serial_port
+
+                        # 被关联的库（添加的CMake原生库）
+                        ${log-lib} )

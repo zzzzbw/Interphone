@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zbw.interphone">
-
+    <uses-sdk android:targetSdkVersion="25" android:minSdkVersion="13" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

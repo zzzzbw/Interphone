@@ -54,7 +54,7 @@ public class InterphoneChannel {
     private static final String JSON_CHOICECALL = "choiceCall";
     private static final String JSON_INTERFERE = "interfere";
 
-    public InterphoneChannel(){
+    public InterphoneChannel() {
         id = UUID.randomUUID().toString();
     }
 
@@ -67,12 +67,12 @@ public class InterphoneChannel {
         firstScan = json.getInt(JSON_FIRSTSCAN);
         receiveRate = (float) json.getDouble(JSON_RECEVIERATE);
         receiveCTCSSType = json.getInt(JSON_REVEIVECTCSSTYPE);
-        receiveCTCSSRate = json.getInt(JSON_RECEIVECTCSSRATE);
-        receiveCTCSSCode = json.getInt(JSON_REVEIVECTCSSCODE);
+        receiveCTCSSRate = (float) json.getDouble(JSON_RECEIVECTCSSRATE);
+        receiveCTCSSCode = (float) json.getDouble(JSON_REVEIVECTCSSCODE);
         launchRate = json.getInt(JSON_LAUNCHRATE);
         launchCTCSSType = json.getInt(JSON_LAUNCHCTCSSTYPE);
-        launchCTCSSRate = json.getInt(JSON_LAUNCHCTCSSRATE);
-        launchCTCSSCode = json.getInt(JSON_LAUNCHCTCSSCODE);
+        launchCTCSSRate = (float) json.getDouble(JSON_LAUNCHCTCSSRATE);
+        launchCTCSSCode = (float) json.getDouble(JSON_LAUNCHCTCSSCODE);
         valid = json.getBoolean(JSON_VALID);
         PTTID = json.getBoolean(JSON_PTTID);
         busyDeny = json.getBoolean(JSON_BUSYDENY);

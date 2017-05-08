@@ -3,12 +3,11 @@
     android:id="@+id/drawerLayoutLeft"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <!--主布局-->
-    <ScrollView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <ScrollView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,7 +16,7 @@
             android:paddingLeft="@dimen/horizontal_page_margin"
             android:paddingRight="@dimen/horizontal_page_margin"
             android:paddingTop="@dimen/vertical_page_margin">
-
+            <!--CardView布局-->
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,15 +130,13 @@
 
 
             </android.support.v7.widget.CardView>
-
-
+            <!--风格线-->
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/colorPrimaryDark" />
-
-
+            <!--按钮组合-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -198,17 +195,30 @@
                         android:text="读频" />
                 </RelativeLayout>
 
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp">
+
+                    <com.gc.materialdesign.views.ButtonRectangle
+                        android:id="@+id/buttonStopDevice"
+                        android:layout_width="140dp"
+                        android:layout_height="48dp"
+                        android:layout_centerInParent="true"
+                        android:background="@color/colorPrimaryLight"
+                        android:text="停止读/写频" />
+                </RelativeLayout>
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
+
     <!--侧滑菜单-->
     <LinearLayout
         android:layout_width="220dp"
         android:layout_height="match_parent"
-        android:background="#fff"
-        android:layout_gravity="start">
+        android:layout_gravity="start"
+        android:background="#fff">
+
         <ListView
             android:id="@+id/listViewLeftMenu"
             android:layout_width="match_parent"

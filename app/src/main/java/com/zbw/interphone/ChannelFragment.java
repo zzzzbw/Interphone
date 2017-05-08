@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.zbw.interphone.model.ChannelList;
 import com.zbw.interphone.model.InterphoneChannel;
 import com.zbw.interphone.model.InterphoneGlobal;
 import com.zbw.interphone.util.ResourceUtil;
@@ -138,7 +139,7 @@ public class ChannelFragment extends Fragment {
         int title = 0, items = 0;
         int index = -1;
         Method setMethod = null;
-
+        Class valueType = int.class;
         try {
             switch (view.getId()) {
                 case R.id.viewChannelSpacing:
@@ -167,11 +168,17 @@ public class ChannelFragment extends Fragment {
                     break;
                 case R.id.viewReceiveCTCSSRate:
                     title = R.string.CTCSS_rate;
+                    items = R.array.CTCSSRate_values;
+                    index = RUtil.getIndex(items, mChannel.getReceiveCTCSSRate());
                     setMethod = InterphoneChannel.class.getMethod("setReceiveCTCSSRate", float.class);
+                    valueType = float.class;
                     break;
                 case R.id.viewReceiveCTCSSCode:
                     title = R.string.CTCSS_code;
+                    items=R.array.CTCSSCode_values;
+                    index=RUtil.getIndex(items,mChannel.getReceiveCTCSSCode());
                     setMethod = InterphoneChannel.class.getMethod("setReceiveCTCSSCode", float.class);
+                    valueType = float.class;
                     break;
                 case R.id.viewLaunchCTCSSType:
                     title = R.string.CTCSS_type;
@@ -181,11 +188,17 @@ public class ChannelFragment extends Fragment {
                     break;
                 case R.id.viewLaunchCTCSSRate:
                     title = R.string.CTCSS_rate;
+                    items = R.array.CTCSSRate_values;
+                    index = RUtil.getIndex(items, mChannel.getLaunchCTCSSRate());
                     setMethod = InterphoneChannel.class.getMethod("setLaunchCTCSSRate", float.class);
+                    valueType = float.class;
                     break;
                 case R.id.viewLaunchCTCSSCode:
                     title = R.string.CTCSS_code;
+                    items=R.array.CTCSSCode_values;
+                    index=RUtil.getIndex(items,mChannel.getLaunchCTCSSCode());
                     setMethod = InterphoneChannel.class.getMethod("setLaunchCTCSSCode", float.class);
+                    valueType = float.class;
                     break;
 
             }
@@ -195,6 +208,7 @@ public class ChannelFragment extends Fragment {
 
         final int finalItems = items;
         final Method finalSetMethod = setMethod;
+        final Class finalValueType = valueType;
         new MaterialDialog.Builder(mAppActivity)
                 .title(title)
                 .items(items)
@@ -205,9 +219,16 @@ public class ChannelFragment extends Fragment {
                             return false;
                         }
 
-                        int value = RUtil.getIndex(finalItems, text.toString());
+
                         if (finalSetMethod != null) {
                             try {
+                                Object value;
+                                if (finalValueType == float.class) {
+                                    value = Float.parseFloat(text.toString());
+                                    finalSetMethod.invoke(mChannel, value);
+                                } else {
+                                    value = RUtil.getIndex(finalItems, text.toString());
+                                }
                                 finalSetMethod.invoke(mChannel, value);
                                 InterphoneGlobal.get(mAppActivity).getChannelList().updateChannel(mChannel);
                             } catch (IllegalAccessException e) {

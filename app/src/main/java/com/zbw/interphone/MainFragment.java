@@ -63,6 +63,8 @@ public class MainFragment extends Fragment {
     public ButtonRectangle buttonWriteDevice;
     @BindView(R.id.buttonReadDevice)
     public ButtonRectangle buttonReadDevice;
+    @BindView(R.id.buttonStopDevice)
+    public ButtonRectangle buttonStopDevice;
 
 
     @BindView(R.id.toolBarSetting)
@@ -91,6 +93,7 @@ public class MainFragment extends Fragment {
         mDeviceSetting = DeviceSetting.get(mAppActivity);
         mPortHelper = new SerialPortHelper(mAppActivity);
         RUtil = new ResourceUtil(mAppActivity);
+        InterphoneGlobal.get(mAppActivity);//初始化global
         int[] resId = {MAIN_INFO, MAIN_SETTINGS, MAIN_CHANNEL, MAIN_DTMF, MAIN_SCAN, MAIN_SAVE};
         lvs = RUtil.getStringRescourceList(resId);
 
@@ -153,7 +156,15 @@ public class MainFragment extends Fragment {
     @OnClick(R.id.buttonSelectDevice)
     public void onClickButtonSelectDevice() {
         int index = -1;
-        ArrayList<String> deviceList = FileUtil.getFiles("/dev", "tty");
+        ArrayList<String> deviceList;
+        try {
+            deviceList = FileUtil.getFiles("/dev", "tty");
+        } catch (SecurityException e) {
+            e.printStackTrace();
+            Toast.makeText(mAppActivity, "无法读取文件权限，请给予root权限", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         new MaterialDialog.Builder(mAppActivity)
                 .title(R.string.device)
                 .items(deviceList)
@@ -193,22 +204,27 @@ public class MainFragment extends Fragment {
         } else if (portState == mPortHelper.IO_ERROR) {
             textViewConnectState.setText(R.string.deviceConnectStateFailed);
             textViewConnectState.setTextColor(ContextCompat.getColor(mAppActivity, R.color.colorAccent));
-            Toast.makeText(mAppActivity, "连接串口失败,IO错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mAppActivity, "连接串口失败,IO错误,请检查串口是否设置正确", Toast.LENGTH_SHORT).show();
         } else if (portState == mPortHelper.SECURITY_ERROR) {
             textViewConnectState.setText(R.string.deviceConnectStateFailed);
             textViewConnectState.setTextColor(ContextCompat.getColor(mAppActivity, R.color.colorAccent));
-            Toast.makeText(mAppActivity, "连接串口失败，权限错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mAppActivity, "连接串口失败，权限错误，请给予root权限", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     @OnClick(R.id.buttonWriteDevice)
-    public void listenPort() {
-        mPortHelper.listenPort();
+    public void writeDevice() {
+        mPortHelper.listenPort(true);
     }
 
     @OnClick(R.id.buttonReadDevice)
-    public void stopPort() {
+    public void readDevice() {
+
+    }
+
+    @OnClick(R.id.buttonStopDevice)
+    public void stopDevice() {
         mPortHelper.stopListen();
     }
 

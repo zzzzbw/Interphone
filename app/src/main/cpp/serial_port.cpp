@@ -3,17 +3,13 @@
 //
 #include <termios.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-#include <string.h>
 #include <jni.h>
 #include "include/com_zbw_interphone_serialport_SerialPort.h"
 
 #include "android/log.h"
 
 static const char *TAG = "serial_port";
-#define LOGI(fmt, args...) __android_log_print(ANDROID_LOG_INFO,  TAG, fmt, ##args)
 #define LOGD(fmt, args...) __android_log_print(ANDROID_LOG_DEBUG, TAG, fmt, ##args)
 #define LOGE(fmt, args...) __android_log_print(ANDROID_LOG_ERROR, TAG, fmt, ##args)
 
@@ -111,21 +107,14 @@ JNIEXPORT jobject JNICALL Java_com_zbw_interphone_serialport_SerialPort_open
 
     /* Opening device */
     {
-
         jboolean iscopy;
-        // old code
-        // const char *path_utf = (*env)->GetStringUTFChars(env, path, &iscopy);
         const char *path_utf = (*env).GetStringUTFChars(path, &iscopy);
         LOGD("Opening serial port %s", path_utf);
-        //fd = open(path_utf, O_RDWR | O_DIRECT | O_SYNC);
         fd = open(path_utf, O_RDWR | O_NOCTTY | O_NONBLOCK | O_NDELAY);
         LOGD("open() fd = %d", fd);
-        // old code
-        // (*env)->ReleaseStringUTFChars(env, path, path_utf);
         (*env).ReleaseStringUTFChars(path, path_utf);
 
         if (fd == -1) {
-            /* Throw an exception */
             LOGE("Cannot open port");
             /* TODO: throw an exception */
             return NULL;
@@ -157,13 +146,6 @@ JNIEXPORT jobject JNICALL Java_com_zbw_interphone_serialport_SerialPort_open
 
     /* Create a corresponding file descriptor */
     {
-        /* old code
-        jclass cFileDescriptor = (*env)->FindClass(env, "java/io/FileDescriptor");
-        jmethodID iFileDescriptor = (*env)->GetMethodID(env, cFileDescriptor, "<init>", "()V");
-        jfieldID descriptorID = (*env)->GetFieldID(env, cFileDescriptor, "descriptor", "I");
-        mFileDescriptor = (*env)->NewObject(env, cFileDescriptor, iFileDescriptor);
-        (*env)->SetIntField(env, mFileDescriptor, descriptorID, (jint) fd);
-        */
         jclass cFileDescriptor = (*env).FindClass("java/io/FileDescriptor");
         jmethodID iFileDescriptor = (*env).GetMethodID(cFileDescriptor, "<init>", "()V");
         jfieldID descriptorID = (*env).GetFieldID(cFileDescriptor, "descriptor", "I");
@@ -194,15 +176,4 @@ JNIEXPORT void JNICALL Java_com_zbw_interphone_serialport_SerialPort_close
     close(descriptor);
 }
 
-/*
- * Class:     com_zbw_serialport_SerialPort
- * Method:    test
- * Signature: ()Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_com_zbw_interphone_serialport_SerialPort_test
-        (JNIEnv *env, jclass) {
-    char *result = "this is call from JNI C++ side";
-    jstring param = env->NewStringUTF(result);
-    return param;
-}
 

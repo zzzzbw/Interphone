@@ -34,8 +34,8 @@ public class InterphoneGlobal {
     private Context mAppContext;
 
 
-    /*
-    private InterphoneGlobal(Context context) {
+    //用于在无法读取文件时使用
+    private InterphoneGlobal(Context context, int i) {
         mAppContext = context;
         mSerializer = new InterphoneJSONSerializerUtil(mAppContext, FILENAME);
 
@@ -71,38 +71,42 @@ public class InterphoneGlobal {
 
         mChannelList = new ChannelList();
     }
-    */
 
 
-
-    private InterphoneGlobal(Context context){
+    private InterphoneGlobal(Context context) throws IOException, JSONException {
         mAppContext = context;
         mSerializer = new InterphoneJSONSerializerUtil(mAppContext, FILENAME);
-        try {
-            JSONObject json = mSerializer.loadGlobal();
 
-            JSONObject jsonInfo = json.getJSONObject(JSON_INFO);
-            mInfo = new InterphoneInfo(jsonInfo);
-            JSONObject jsonSetting = json.getJSONObject(JSON_SETTING);
-            mSetting = new InterphoneSetting(jsonSetting);
-            JSONObject jsonDTMFSetting = json.getJSONObject(JSON_DTMFSETTING);
-            mDTMFSetting = new DTMFSetting(jsonDTMFSetting);
-            JSONObject jsonScan = json.getJSONObject(JSON_SCAN);
-            mScan = new InterphoneScan(jsonScan);
-            JSONObject jsonChannelList = json.getJSONObject(JSON_CHANNELLIST);
-            mChannelList = new ChannelList(jsonChannelList);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        JSONObject json = mSerializer.loadGlobal();
+        if (json == null) {
+            throw new JSONException("No json");
         }
+
+        JSONObject jsonInfo = json.getJSONObject(JSON_INFO);
+        mInfo = new InterphoneInfo(jsonInfo);
+        JSONObject jsonSetting = json.getJSONObject(JSON_SETTING);
+        mSetting = new InterphoneSetting(jsonSetting);
+        JSONObject jsonDTMFSetting = json.getJSONObject(JSON_DTMFSETTING);
+        mDTMFSetting = new DTMFSetting(jsonDTMFSetting);
+        JSONObject jsonScan = json.getJSONObject(JSON_SCAN);
+        mScan = new InterphoneScan(jsonScan);
+        JSONObject jsonChannelList = json.getJSONObject(JSON_CHANNELLIST);
+        mChannelList = new ChannelList(jsonChannelList);
 
     }
 
 
     public static InterphoneGlobal get(Context context) {
         if (sGloabl == null) {
-            sGloabl = new InterphoneGlobal(context);
+            try {
+                sGloabl = new InterphoneGlobal(context);
+            } catch (IOException e) {
+                e.printStackTrace();
+                sGloabl = new InterphoneGlobal(context, 1);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                sGloabl = new InterphoneGlobal(context, 1);
+            }
         }
         return sGloabl;
     }

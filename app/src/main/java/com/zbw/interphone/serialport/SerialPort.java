@@ -30,16 +30,11 @@ public class SerialPort {
 
         //检查权限
         if (!device.canRead() || !device.canWrite()) {
-            String t = "canRead:" + device.canRead() + "  canWrite:" + device.canWrite();
-
-            Log.d(TAG, t);
-
             try {
                 //没有读/写权限，尝试为文件授权
                 Process su;
                 su = Runtime.getRuntime().exec("/system/bin/su");
-                String cmd = "chmod 777 " + device.getAbsolutePath() + "\n" + "exit\n";
-                Log.d(TAG, cmd);
+                String cmd = "chmod 666 " + device.getAbsolutePath() + "\n" + "exit\n";
                 su.getOutputStream().write(cmd.getBytes());
                 if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
                     throw new SecurityException();
@@ -57,6 +52,7 @@ public class SerialPort {
         }
         mFileInputStream = new FileInputStream(mFd);
         mFileOutputStream = new FileOutputStream(mFd);
+        close();
     }
 
 
@@ -70,11 +66,7 @@ public class SerialPort {
 
     // JNI
     private native static FileDescriptor open(String path, int baudrate);
-
     public native void close();
-
-    public native static String test();
-
     static {
         System.loadLibrary("serial_port");
     }

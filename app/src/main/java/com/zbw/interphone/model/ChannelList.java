@@ -17,7 +17,7 @@ public class ChannelList {
 
     private static final String JSON_CHANNELS = "channels";
 
-    public ChannelList(){
+    public ChannelList() {
 
         channels = new ArrayList<>();
         for (int i = 0; i < 255; i++) {
@@ -31,10 +31,10 @@ public class ChannelList {
     }
 
     public ChannelList(JSONObject json) throws JSONException {
-        JSONArray array=json.getJSONArray(JSON_CHANNELS);
+        JSONArray array = json.getJSONArray(JSON_CHANNELS);
         channels = new ArrayList<>();
-        for(int i=0;i<array.length();i++){
-            InterphoneChannel channel=new InterphoneChannel(array.getJSONObject(i));
+        for (int i = 0; i < array.length(); i++) {
+            InterphoneChannel channel = new InterphoneChannel(array.getJSONObject(i));
             channels.add(channel);
         }
 
@@ -52,6 +52,14 @@ public class ChannelList {
 
     public ArrayList<InterphoneChannel> getChannels() {
         return channels;
+    }
+
+    public ArrayList<InterphoneChannel> getChannels(int begin, int end) {
+        ArrayList<InterphoneChannel> list=new ArrayList<>();
+        for(int i=begin;i<end-begin+1;i++){
+            list.add(channels.get(i));
+        }
+        return list;
     }
 
     public InterphoneChannel getChannel(String id) {

@@ -2,7 +2,9 @@ package com.zbw.interphone.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,16 +27,12 @@ import static android.content.ContentValues.TAG;
 public class LineSettingView extends LinearLayout {
     //主题
     private String subject;
-
     //标题
     private String title;
-
     //标题对应的内容
     private String content;
-
     //是否能够跳转
     private boolean canNav;
-
     //是否位于此主题下的最后一行
     private boolean isBottom;
 
@@ -45,7 +43,6 @@ public class LineSettingView extends LinearLayout {
     private Switch switch_nav;
 
     private OnClickListener mClickListener;
-    private OnCheckedChangeListener mSwitchChangeListener;
 
     public LineSettingView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -108,6 +105,7 @@ public class LineSettingView extends LinearLayout {
         return content;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public void setSwitch(boolean isSwitch){
         if(switch_nav.getVisibility()==INVISIBLE){
             return;

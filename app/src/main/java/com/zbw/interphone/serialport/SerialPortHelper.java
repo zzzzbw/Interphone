@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.zbw.interphone.model.DeviceSetting;
+import com.zbw.interphone.util.InterphoneByteSerializerUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,11 +34,21 @@ public class SerialPortHelper {
     private static final int HANDSHAKE_FALSE = 0x1113;
     private static final int HANDSHAKE_SUCCESS = 0x1114;
 
+
+    private static final int FIRST_HANDSHAKE = 0x1001;
+    private static final int SECOND_HANDSHAKE = 0x1002;
+    private static final int THIRD_HANDSHAKE = 0x1003;
+    private static final int WRITE_SUCCESS = 0x1004;
+    private static final int READ_SUCCESS = 0x1005;
+    private static final int SETTING_SUCCESS = 0x1006;
+    private static final int SETTING_ERROR = 0x1007;
+
     private FileOutputStream mOutputStream;
     private FileInputStream mInputStream;
     private SerialPort sp;
     private ListenThread mThread;
     private Handler mToastHandler;
+    private InterphoneByteSerializerUtil byteSerializerUtil;
 
     private DeviceSetting mSoftwareSetting;
     private Context mAppActivity;
@@ -45,6 +56,7 @@ public class SerialPortHelper {
     public SerialPortHelper(final Context context) {
         mAppActivity = context;
         mSoftwareSetting = DeviceSetting.get(context);
+        byteSerializerUtil = new InterphoneByteSerializerUtil(mAppActivity);
         mToastHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -64,6 +76,9 @@ public class SerialPortHelper {
                         break;
                     case HANDSHAKE_SUCCESS:
                         content = "握手协议成功";
+                        break;
+                    case SETTING_SUCCESS:
+                        content = "写频成功";
                         break;
                 }
                 Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
@@ -95,11 +110,12 @@ public class SerialPortHelper {
         return ERROR;
     }
 
-    public void listenPort() {
+    public void listenPort(boolean write) {
         if (mThread != null) {
             mThread = null;
         }
         mThread = new ListenThread();
+        mThread.write = write;
         mThread.start();
     }
 
@@ -121,41 +137,69 @@ public class SerialPortHelper {
         Log.d(TAG, "第" + state + "次握手协议接收,  array: " + Arrays.toString(temp));
 
         switch (state) {
-            case 0:
+            case FIRST_HANDSHAKE:
                 if (Arrays.equals(temp, ProtocolConstant.firstHandshakeReceive)) {
                     mOutputStream = (FileOutputStream) sp.getOutputStream();
                     mOutputStream.write(ProtocolConstant.firstHandshakeLaunch);
                     mOutputStream.write('\n');
                     Log.d(TAG, "第" + state + "次握手协议发送,  array: " + Arrays.toString(ProtocolConstant.firstHandshakeLaunch));
-                    return 1;
+                    return SECOND_HANDSHAKE;
                 }
                 return state;
-            case 1:
+            case SECOND_HANDSHAKE:
                 if (Arrays.equals(temp, ProtocolConstant.secondHandshakeReceive)) {
                     mOutputStream = (FileOutputStream) sp.getOutputStream();
                     mOutputStream.write(ProtocolConstant.secondHandshakeLaunch);
                     mOutputStream.write('\n');
                     Log.d(TAG, "第" + state + "次握手协议发送,  array: " + Arrays.toString(ProtocolConstant.secondHandshakeLaunch));
-                    return 2;
+                    return THIRD_HANDSHAKE;
                 }
                 return state;
-            case 2:
+            case THIRD_HANDSHAKE:
                 if (Arrays.equals(temp, ProtocolConstant.thirdHandshakeReceive)) {
                     mOutputStream = (FileOutputStream) sp.getOutputStream();
                     mOutputStream.write(ProtocolConstant.thirdHandshakeLaunch);
                     mOutputStream.write('\n');
                     Log.d(TAG, "第" + state + "次握手协议发送,  array: " + Arrays.toString(ProtocolConstant.thirdHandshakeLaunch));
-                    return 3;
+                    return HANDSHAKE_SUCCESS;
                 }
                 return state;
         }
 
-        return -1;
+        return HANDSHAKE_FALSE;
 
     }
 
-    private int writeData(byte[] buffer, int size) throws IOException {
-        return 1;
+    private int writeData() throws IOException, Exception {
+        byte[] data = byteSerializerUtil.toByte();
+        Log.d(TAG, "writeData : " + "writeDatawriteDatawriteDatawriteData");
+        if (mOutputStream == null) {
+            mToastHandler.sendEmptyMessage(NO_DEVICE);
+            return -1;
+        }
+
+        Log.d(TAG, "writeData  array: " + Arrays.toString(data));
+
+        mOutputStream = (FileOutputStream) sp.getOutputStream();
+        mOutputStream.write(data);
+        mOutputStream.write('\n');
+        return WRITE_SUCCESS;
+    }
+
+    private int writeDataEnd(byte[] buffer, int size) {
+        if (mOutputStream == null) {
+            mToastHandler.sendEmptyMessage(NO_DEVICE);
+            return -1;
+        }
+        byte[] temp = new byte[size];
+        System.arraycopy(buffer, 0, temp, 0, size);
+        Log.d(TAG, "writeDataEnd: " + Arrays.toString(temp));
+        if (Arrays.equals(temp, ProtocolConstant.writeDataEnd)) {
+            mToastHandler.sendEmptyMessage(SETTING_SUCCESS);
+            return SETTING_SUCCESS;
+        } else {
+            return SETTING_ERROR;
+        }
     }
 
     private int receiveData(byte[] buffer, int size) throws IOException {
@@ -175,6 +219,7 @@ public class SerialPortHelper {
 
     private class ListenThread extends Thread {
         public volatile boolean exit = false;
+        public volatile boolean write = true;
 
         public volatile int listenTime = mSoftwareSetting.getListenTime();
 
@@ -186,28 +231,40 @@ public class SerialPortHelper {
                 return;
             }
             mToastHandler.sendEmptyMessage(LISTEN_START);
-            int state = 0;
+            int state = FIRST_HANDSHAKE;
             for (int i = 0; i < listenTime && !exit; i++) {
                 int size;
                 try {
+                    if (state == HANDSHAKE_SUCCESS && write) {
+                        state = writeData();
+                    }
+
                     byte[] buffer = new byte[64];
                     size = mInputStream.read(buffer);
-
                     if (size > 0) {
+                        Log.d(TAG, "run: " + state + "write" + write);
+                        if (state == WRITE_SUCCESS) {
+                            writeDataEnd(buffer, size);
+                            break;
+                        }
                         state = handShake(state, buffer, size);
-                        if (state == -1) {
+                        if (state == HANDSHAKE_FALSE) {
                             mToastHandler.sendEmptyMessage(HANDSHAKE_FALSE);
                             break;
                         }
-                        if (state == 3) {
+                        if (state == HANDSHAKE_SUCCESS) {
                             mToastHandler.sendEmptyMessage(HANDSHAKE_SUCCESS);
-                            receiveData(buffer, size);
-                            break;
+                            if (!write) {
+                                receiveData(buffer, size);
+                            }
+                            //break;
                         }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                     return;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             mToastHandler.sendEmptyMessage(LISTEN_END);
